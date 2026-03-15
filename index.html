@@ -3,511 +3,644 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProtoScience — Discovery as a Service</title>
+<title>ProtoScience — Discover governing equations from experimental data</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Base ──────────────────────────────────────── */
+/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; }
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #1a1a2e;
-  color: #e8e8e8;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  background: #FFFFFF;
+  color: #202124;
   line-height: 1.7;
-  overflow-x: hidden;
+  font-size: 18px;
+  font-weight: 400;
 }
-a { color: #e94560; text-decoration: none; }
+a { color: #1A73E8; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* ── Utility ───────────────────────────────────────────── */
-.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-.accent { color: #e94560; }
-.muted { color: #9a9ab0; }
-.section {
-  padding: 100px 0;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeUp 0.8s ease forwards;
-}
-.section:nth-child(2)  { animation-delay: 0.1s; }
-.section:nth-child(3)  { animation-delay: 0.15s; }
-.section:nth-child(4)  { animation-delay: 0.2s; }
-.section:nth-child(5)  { animation-delay: 0.25s; }
-.section:nth-child(6)  { animation-delay: 0.3s; }
-.section:nth-child(7)  { animation-delay: 0.35s; }
-.section:nth-child(8)  { animation-delay: 0.4s; }
-.section:nth-child(9)  { animation-delay: 0.45s; }
+/* ── Container ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
 
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+/* ── Navbar ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #DADCE0;
+  transition: box-shadow 0.2s;
 }
-
-/* ── CTA Button ────────────────────────────────────────── */
-.cta {
+.navbar.scrolled {
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.navbar-brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A73E8;
+  text-decoration: none;
+}
+.navbar-brand:hover { text-decoration: none; }
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.navbar-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5F6368;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar-links a:hover { color: #202124; text-decoration: none; }
+.btn-primary {
   display: inline-block;
-  padding: 16px 40px;
-  background: #e94560;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
+  padding: 10px 24px;
+  background: #1A73E8;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 500;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  background: #1557b0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
   text-decoration: none;
 }
-.cta:hover {
-  background: #d63550;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(233,69,96,0.35);
-  text-decoration: none;
-}
 
-/* ── Section Title ─────────────────────────────────────── */
-.section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 40px;
-  letter-spacing: -0.5px;
-}
-
-/* ── Hero ──────────────────────────────────────────────── */
-#hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ── Hero ── */
+.hero {
   text-align: center;
-  padding: 60px 24px;
-  background: radial-gradient(ellipse at 50% 20%, #16213e 0%, #1a1a2e 70%);
+  padding: 100px 32px 80px;
 }
-#hero h1 {
-  font-size: 4rem;
-  font-weight: 800;
-  letter-spacing: -2px;
-  margin-bottom: 16px;
-}
-#hero .tagline {
-  font-size: 1.6rem;
-  font-weight: 500;
-  margin-bottom: 12px;
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#hero .subtitle {
-  font-size: 1.1rem;
-  color: #9a9ab0;
-  margin-bottom: 40px;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ── Problem ───────────────────────────────────────────── */
-#problem {
-  background: #16213e;
-  border-top: 1px solid #2a2a4a;
-  border-bottom: 1px solid #2a2a4a;
-}
-#problem .statements {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 640px;
-}
-#problem .statements p {
-  font-size: 1.15rem;
-  padding-left: 20px;
-  border-left: 3px solid #e94560;
-}
-
-/* ── How It Works ──────────────────────────────────────── */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-.step {
-  text-align: center;
-  padding: 32px 20px;
-  border-radius: 12px;
-  background: #16213e;
-  border: 1px solid #2a2a4a;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.step:hover {
-  border-color: #e94560;
-  transform: translateY(-4px);
-}
-.step-icon {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #e94560;
-  margin-bottom: 16px;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  border-radius: 50%;
-  border: 2px solid #e94560;
+.hero-label {
   display: inline-block;
-}
-.step h3 { font-size: 1.15rem; margin-bottom: 10px; }
-.step p { font-size: 0.95rem; color: #9a9ab0; }
-
-/* ── Proof Table ───────────────────────────────────────── */
-.proof-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px;
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-}
-.proof-table th {
-  text-align: left;
-  padding: 14px 16px;
-  background: #e94560;
-  color: #fff;
+  font-size: 12px;
   font-weight: 600;
-}
-.proof-table th:first-child { border-radius: 8px 0 0 0; }
-.proof-table th:last-child  { border-radius: 0 8px 0 0; }
-.proof-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #2a2a4a;
-}
-.proof-table tr:nth-child(even) td { background: #16213e; }
-.proof-table tr:nth-child(odd) td  { background: #1a1a2e; }
-.proof-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
-.proof-table tr:last-child td:last-child  { border-radius: 0 0 8px 0; }
-
-.anti-result {
-  margin-top: 28px;
-  padding: 20px 24px;
-  background: #16213e;
-  border-left: 4px solid #e94560;
-  border-radius: 0 8px 8px 0;
-  font-size: 1rem;
-}
-
-/* ── Deliverables ──────────────────────────────────────── */
-.deliverables {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-.deliverable {
-  padding: 20px 24px;
-  background: #16213e;
-  border-radius: 10px;
-  border: 1px solid #2a2a4a;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-.deliverable .icon {
-  font-size: 1.4rem;
-  color: #e94560;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  border: 1px solid #e94560;
-  border-radius: 6px;
-  font-weight: 700;
-}
-.deliverable p { font-size: 0.95rem; }
-
-/* ── Pricing ───────────────────────────────────────────── */
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1A73E8;
   margin-bottom: 20px;
 }
-.price-card {
-  background: #16213e;
-  border: 1px solid #2a2a4a;
-  border-radius: 12px;
-  padding: 36px 28px;
+.hero h1 {
+  font-size: 56px;
+  font-weight: 700;
+  color: #202124;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-desc {
+  font-size: 18px;
+  color: #5F6368;
+  max-width: 640px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.btn-hero-primary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #1A73E8;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-hero-primary:hover {
+  background: #1557b0;
+  box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+  text-decoration: none;
+}
+.btn-hero-secondary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #FFFFFF;
+  color: #1A73E8;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 2px solid #1A73E8;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-hero-secondary:hover {
+  background: #E8F0FE;
+  text-decoration: none;
+}
+.hero-note {
+  font-size: 14px;
+  color: #5F6368;
+}
+
+/* ── Social Proof Bar ── */
+.social-proof {
+  background: #E8F0FE;
+  padding: 24px 32px;
   text-align: center;
-  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
-.price-card:hover {
-  border-color: #e94560;
-  transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(233,69,96,0.15);
+.social-proof p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5F6368;
+  letter-spacing: 0.3px;
 }
-.price-card.featured {
-  border-color: #e94560;
-  position: relative;
+
+/* ── Section Styles ── */
+.section {
+  padding: 100px 0;
 }
-.price-card.featured::before {
-  content: 'Most Popular';
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #e94560;
-  color: #fff;
-  padding: 4px 16px;
-  border-radius: 20px;
-  font-size: 0.75rem;
+.section-title {
+  font-size: 36px;
   font-weight: 600;
+  color: #202124;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+/* ── How It Works ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.step-card {
+  text-align: center;
+  padding: 40px 28px;
+  border-radius: 12px;
+  border: 1px solid #DADCE0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.step-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.step-number {
+  width: 48px;
+  height: 48px;
+  line-height: 46px;
+  border-radius: 50%;
+  border: 2px solid #1A73E8;
+  color: #1A73E8;
+  font-size: 20px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.step-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 12px;
+}
+.step-card p {
+  font-size: 16px;
+  color: #5F6368;
+  line-height: 1.6;
+}
+
+/* ── Example Discovery ── */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.example-col h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: #E8F0FE;
+  color: #1A73E8;
+  border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.price-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-.price-card .price {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: #e94560;
-  margin-bottom: 16px;
+.code-block {
+  background: #F8F9FA;
+  border: 1px solid #DADCE0;
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #202124;
+  overflow-x: auto;
 }
-.price-card .price-desc {
-  font-size: 0.9rem;
-  color: #9a9ab0;
+.equation-block {
+  background: #FFFFFF;
+  border: 1px solid #DADCE0;
+  border-radius: 8px;
+  padding: 24px;
+}
+.equation {
+  font-size: 18px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 8px;
+  font-family: 'Inter', sans-serif;
+}
+.equation .var { font-style: italic; }
+.equation .coeff { color: #1A73E8; font-weight: 600; }
+.equation-meta {
+  font-size: 14px;
+  color: #5F6368;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #DADCE0;
+}
+.chart-container {
+  margin-top: 20px;
+  border: 1px solid #DADCE0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+/* ── Validated Results ── */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.result-card {
+  padding: 20px;
+  border: 1px solid #DADCE0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.result-card .domain {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #1A73E8;
+  margin-bottom: 6px;
+}
+.result-card .discovery {
+  font-size: 15px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.result-card .metric {
+  font-size: 14px;
+  color: #5F6368;
+}
+.anti-result {
+  padding: 20px 24px;
+  background: #F8F9FA;
+  border-left: 4px solid #1A73E8;
+  border-radius: 0 8px 8px 0;
+  font-size: 16px;
+  color: #202124;
   line-height: 1.6;
 }
-.pricing-note {
-  text-align: center;
-  color: #9a9ab0;
-  font-size: 0.9rem;
-  font-style: italic;
-}
 
-/* ── FAQ ───────────────────────────────────────────────── */
-.faq-list { max-width: 700px; }
-.faq-item {
-  margin-bottom: 28px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid #2a2a4a;
+/* ── Use Cases ── */
+.usecases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
 }
-.faq-item:last-child { border-bottom: none; }
-.faq-item h3 {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  color: #fff;
+.usecase-item {
+  padding: 32px;
+  border: 1px solid #DADCE0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-.faq-item p { color: #9a9ab0; font-size: 0.95rem; }
-
-/* ── Contact ───────────────────────────────────────────── */
-#contact { text-align: center; background: #16213e; border-top: 1px solid #2a2a4a; }
-#contact .lead {
-  font-size: 1.6rem;
+.usecase-item h3 {
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 32px;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
+  color: #202124;
+  margin-bottom: 8px;
 }
-.contact-channels {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-bottom: 36px;
-  flex-wrap: wrap;
+.usecase-item p {
+  font-size: 16px;
+  color: #5F6368;
+  line-height: 1.6;
 }
-.contact-channels a {
-  font-size: 1.05rem;
-  color: #9a9ab0;
-  transition: color 0.2s;
-}
-.contact-channels a:hover { color: #e94560; }
 
-/* ── Footer ────────────────────────────────────────────── */
-footer {
-  padding: 40px 24px;
+/* ── CTA Section ── */
+.cta-section {
+  background: #E8F0FE;
+  padding: 80px 0;
   text-align: center;
-  color: #5a5a7a;
-  font-size: 0.85rem;
-  border-top: 1px solid #2a2a4a;
 }
-footer p + p { margin-top: 6px; }
+.cta-section h2 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 12px;
+}
+.cta-section .cta-desc {
+  font-size: 18px;
+  color: #5F6368;
+  margin-bottom: 32px;
+}
+.cta-section .cta-email {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #5F6368;
+}
+.cta-section .cta-email a {
+  color: #1A73E8;
+}
 
-/* ── Responsive ────────────────────────────────────────── */
-@media (max-width: 768px) {
-  #hero h1 { font-size: 2.6rem; }
-  #hero .tagline { font-size: 1.2rem; }
-  .steps { grid-template-columns: 1fr; gap: 20px; }
-  .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
-  .proof-table { font-size: 0.82rem; }
-  .proof-table th, .proof-table td { padding: 10px 10px; }
-  .section { padding: 60px 0; }
-  .section-title { font-size: 1.6rem; }
+/* ── Footer ── */
+.footer {
+  background: #F8F9FA;
+  padding: 32px 0;
+  border-top: 1px solid #DADCE0;
 }
-@media (max-width: 480px) {
-  #hero h1 { font-size: 2rem; }
-  .cta { padding: 14px 28px; font-size: 1rem; }
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-inner p {
+  font-size: 14px;
+  color: #5F6368;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero h1 { font-size: 40px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+  .example-grid { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+  .usecases-grid { grid-template-columns: 1fr; }
+  .section { padding: 64px 0; }
+  .section-title { font-size: 28px; margin-bottom: 40px; }
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 32px; }
+  .hero { padding: 64px 20px 48px; }
+  .navbar-links a.nav-text { display: none; }
+  .results-grid { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+  .container { padding: 0 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ HERO ═══════════════ -->
-<section id="hero" class="section">
-  <div class="container">
-    <h1><span class="accent">Proto</span>Science</h1>
-    <p class="tagline">Your data has equations hiding in it.<br>We find them.</p>
-    <p class="subtitle">Upload your time-series. Get governing equations. No physics PhD required.</p>
-    <a href="#contact" class="cta">Send Your Data</a>
+<!-- ── NAVBAR ── -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="#" class="navbar-brand">ProtoScience</a>
+    <div class="navbar-links">
+      <a href="#how" class="nav-text">How it Works</a>
+      <a href="#example" class="nav-text">Examples</a>
+      <a href="#usecases" class="nav-text">Use Cases</a>
+      <a href="#cta" class="btn-primary">Upload Dataset</a>
+    </div>
   </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <span class="hero-label">Automated Scientific Discovery</span>
+  <h1>Discover governing equations from experimental data.</h1>
+  <p class="hero-desc">Upload time-series data and automatically infer the mathematical laws that govern your system. No physics PhD required.</p>
+  <div class="hero-buttons">
+    <a href="#cta" class="btn-hero-primary">Upload Dataset</a>
+    <a href="#example" class="btn-hero-secondary">See Example</a>
+  </div>
+  <p class="hero-note">Supports CSV files with time and measurement columns</p>
 </section>
 
-<!-- ═══════════════ PROBLEM ═══════════════ -->
-<section id="problem" class="section">
+<!-- ── SOCIAL PROOF ── -->
+<div class="social-proof">
+  <p>Validated across 8 scientific domains -- from epidemiology to astrophysics</p>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section" id="how">
   <div class="container">
-    <h2 class="section-title">The Problem</h2>
-    <div class="statements">
-      <p>You have sensor data, lab measurements, or simulation outputs.</p>
-      <p>You know there's a pattern. You just don't know the equation.</p>
-      <p>Traditional approach: hire a PhD, spend months modeling. Or guess.</p>
+    <h2 class="section-title">How it works</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Upload Data</h3>
+        <p>Upload a CSV containing time-series measurements. One time column, up to 6 measurement columns.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Discover Laws</h3>
+        <p>ProtoScience identifies governing equations using sparse symbolic regression. No priors, no assumptions.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Analyze Results</h3>
+        <p>Receive differential equations, coefficients, R-squared metrics, and predictive trajectory plots.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
-<section id="how" class="section">
+<!-- ── EXAMPLE DISCOVERY ── -->
+<section class="section" id="example">
   <div class="container">
-    <h2 class="section-title">How It Works</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">1</div>
-        <h3>Send us your CSV</h3>
-        <p>Time-series data, any domain. Sensors, labs, simulations&mdash;if it has a time column, we can work with it.</p>
+    <h2 class="section-title">Example: Predator-Prey Discovery</h2>
+    <div class="example-grid">
+      <div class="example-col">
+        <h3>Input <span class="badge">CSV</span></h3>
+        <div class="code-block">time, prey, predator
+0,    40,   9
+1,    42,   8
+2,    45,   7
+3,    52,   6.5
+4,    58,   7
+5,    61,   9
+...</div>
       </div>
-      <div class="step">
-        <div class="step-icon">2</div>
-        <h3>We run blind discovery</h3>
-        <p>Our AI finds the governing equations without any prior knowledge of your system. No assumptions, no hand-tuning.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">3</div>
-        <h3>You get the equations</h3>
-        <p>Mathematical laws, coefficient values, R&sup2; scores, and prediction plots. Actionable results, not black boxes.</p>
+      <div class="example-col">
+        <h3>Discovered Equations</h3>
+        <div class="equation-block">
+          <div class="equation">d<span class="var">Prey</span>/dt = <span class="coeff">0.46</span> <span class="var">Prey</span> &minus; <span class="coeff">1.87</span> <span class="var">Prey</span> &middot; <span class="var">Pred</span></div>
+          <div class="equation">d<span class="var">Pred</span>/dt = &minus;<span class="coeff">1.93</span> <span class="var">Pred</span> + <span class="coeff">2.17</span> <span class="var">Prey</span> &middot; <span class="var">Pred</span></div>
+          <div class="equation-meta">R&sup2; = 0.93 &nbsp;|&nbsp; Lotka-Volterra structure recovered</div>
+        </div>
+        <div class="chart-container">
+          <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;">
+            <!-- Axes -->
+            <line x1="40" y1="10" x2="40" y2="170" stroke="#DADCE0" stroke-width="1"/>
+            <line x1="40" y1="170" x2="490" y2="170" stroke="#DADCE0" stroke-width="1"/>
+            <!-- Axis labels -->
+            <text x="260" y="195" text-anchor="middle" fill="#5F6368" font-family="Inter,sans-serif" font-size="11">Time</text>
+            <text x="14" y="95" text-anchor="middle" fill="#5F6368" font-family="Inter,sans-serif" font-size="11" transform="rotate(-90,14,95)">Population</text>
+            <!-- Prey curve (blue) - oscillating, phase 0 -->
+            <path d="M40,90 C65,50 90,30 115,40 C140,50 155,80 170,100 C185,120 200,145 225,150 C250,155 265,140 280,110 C295,80 310,45 335,35 C360,25 375,50 390,75 C405,100 420,135 445,145 C460,150 475,135 490,105" fill="none" stroke="#4285F4" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Predator curve (red) - oscillating, phase offset -->
+            <path d="M40,130 C65,120 90,90 115,60 C140,40 155,35 170,50 C185,65 200,90 225,115 C250,135 265,150 280,150 C295,145 310,120 335,85 C360,55 375,35 390,40 C405,50 420,75 445,105 C460,130 475,148 490,148" fill="none" stroke="#EA4335" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Legend -->
+            <line x1="340" y1="14" x2="360" y2="14" stroke="#4285F4" stroke-width="2.5"/>
+            <text x="365" y="18" fill="#5F6368" font-family="Inter,sans-serif" font-size="11">Prey</text>
+            <line x1="410" y1="14" x2="430" y2="14" stroke="#EA4335" stroke-width="2.5"/>
+            <text x="435" y="18" fill="#5F6368" font-family="Inter,sans-serif" font-size="11">Predator</text>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ PROOF ═══════════════ -->
-<section id="proof" class="section">
+<!-- ── VALIDATED RESULTS ── -->
+<section class="section" id="validated">
   <div class="container">
-    <h2 class="section-title">Proof</h2>
-    <p style="margin-bottom: 28px; font-size: 1.1rem;">We've blindly discovered known laws across <span class="accent">8 domains</span>:</p>
-    <table class="proof-table">
-      <thead>
-        <tr><th>Domain</th><th>Law Discovered</th><th>Accuracy</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Epidemiology</td><td>SIR equations (dS/dt = &minus;&beta;SI)</td><td>88.6%</td></tr>
-        <tr><td>Ecology</td><td>Lotka-Volterra from 1900s fur records</td><td>R&sup2;=0.93</td></tr>
-        <tr><td>Chemistry</td><td>BZ reaction (Oregonator)</td><td>R&sup2;=1.0</td></tr>
-        <tr><td>Synthetic Biology</td><td>Repressilator Hill kinetics</td><td>85%</td></tr>
-        <tr><td>Climate</td><td>CO&sub2; trend + seasonal cycle</td><td>R&sup2;=0.99</td></tr>
-        <tr><td>Astrophysics</td><td>11-year solar cycle</td><td>R&sup2;=0.96</td></tr>
-        <tr><td>Physics</td><td>Hooke's Law (F = &minus;kx)</td><td>12/12 perfect</td></tr>
-        <tr><td>Gravitational Physics</td><td>Newton's gravity + Kepler's laws</td><td>R&sup2;=0.999</td></tr>
-      </tbody>
-    </table>
+    <h2 class="section-title">Validated across domains</h2>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="domain">Epidemiology</div>
+        <div class="discovery">SIR equations</div>
+        <div class="metric">88.6% accuracy</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Ecology</div>
+        <div class="discovery">Lotka-Volterra</div>
+        <div class="metric">R&sup2; = 0.93</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Chemistry</div>
+        <div class="discovery">BZ Oregonator</div>
+        <div class="metric">R&sup2; = 1.0</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Synthetic Biology</div>
+        <div class="discovery">Hill repressilator</div>
+        <div class="metric">85% accuracy</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Climate Science</div>
+        <div class="discovery">CO&#8322; trend + seasonal</div>
+        <div class="metric">R&sup2; = 0.99</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Astrophysics</div>
+        <div class="discovery">Solar 11-year cycle</div>
+        <div class="metric">R&sup2; = 0.96</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Classical Physics</div>
+        <div class="discovery">Hooke's Law F=-kx</div>
+        <div class="metric">12/12 perfect</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Gravitational Physics</div>
+        <div class="discovery">Newton's gravity</div>
+        <div class="metric">R&sup2; = 0.999</div>
+      </div>
+    </div>
     <div class="anti-result">
-      <strong>Anti-result:</strong> We also pointed it at Bitcoin daily prices. Verdict: <span class="accent">no governing equation. R&sup2;=0.00.</span> The system knows when to say "there is no law here."
+      Bitcoin daily prices: no governing equation found. R&sup2; = 0.00. The system knows when there is no law.
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ DELIVERABLES ═══════════════ -->
-<section id="deliverables" class="section">
+<!-- ── USE CASES ── -->
+<section class="section" id="usecases">
   <div class="container">
-    <h2 class="section-title">What You Get</h2>
-    <div class="deliverables">
-      <div class="deliverable">
-        <div class="icon">f</div>
-        <p><strong>Discovered equations</strong> in readable math notation</p>
+    <h2 class="section-title">Built for researchers</h2>
+    <div class="usecases-grid">
+      <div class="usecase-item">
+        <h3>Systems Biology</h3>
+        <p>Discover gene regulatory network dynamics from expression data</p>
       </div>
-      <div class="deliverable">
-        <div class="icon">c</div>
-        <p><strong>Coefficient values</strong> with confidence intervals</p>
+      <div class="usecase-item">
+        <h3>Chemical Engineering</h3>
+        <p>Find reaction kinetics from reactor measurements</p>
       </div>
-      <div class="deliverable">
-        <div class="icon">R</div>
-        <p><strong>R&sup2; goodness-of-fit</strong> scores for each equation</p>
+      <div class="usecase-item">
+        <h3>Ecology</h3>
+        <p>Identify population dynamics from field observations</p>
       </div>
-      <div class="deliverable">
-        <div class="icon">~</div>
-        <p><strong>Prediction plots</strong> &mdash; discovered model vs your data</p>
-      </div>
-      <div class="deliverable">
-        <div class="icon">&#x25A0;</div>
-        <p><strong>PDF report</strong> with full methodology and results</p>
+      <div class="usecase-item">
+        <h3>Physics</h3>
+        <p>Recover force laws from position and velocity data</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ PRICING ═══════════════ -->
-<section id="pricing" class="section">
+<!-- ── CTA ── -->
+<section class="cta-section" id="cta">
   <div class="container">
-    <h2 class="section-title">Pricing</h2>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <h3>Exploratory Analysis</h3>
-        <div class="price">$500</div>
-        <p class="price-desc">One dataset, up to 3 variables. Quick turnaround. See what's in your data.</p>
-      </div>
-      <div class="price-card featured">
-        <h3>Full Discovery</h3>
-        <div class="price">$2,000</div>
-        <p class="price-desc">Multiple datasets, parameter sweeps, full report with prediction validation.</p>
-      </div>
-      <div class="price-card">
-        <h3>Research Partnership</h3>
-        <div class="price">Custom</div>
-        <p class="price-desc">Ongoing collaboration, priority access, co-authored publications.</p>
-      </div>
-    </div>
-    <p class="pricing-note">First analysis free for academic researchers.</p>
+    <h2>Turn experimental data into mathematical insight.</h2>
+    <p class="cta-desc">Upload your dataset. Get equations in minutes.</p>
+    <a href="mailto:discovery@protoscience.ai" class="btn-hero-primary">Upload Dataset</a>
+    <span class="cta-email">Or email your data: <a href="mailto:discovery@protoscience.ai">discovery@protoscience.ai</a></span>
   </div>
 </section>
 
-<!-- ═══════════════ FAQ ═══════════════ -->
-<section id="faq" class="section">
-  <div class="container">
-    <h2 class="section-title">FAQ</h2>
-    <div class="faq-list">
-      <div class="faq-item">
-        <h3>What format does my data need to be in?</h3>
-        <p>CSV with a time column and 1&ndash;6 measurement columns. That's it.</p>
-      </div>
-      <div class="faq-item">
-        <h3>What if there's no equation in my data?</h3>
-        <p>We'll tell you. Our system correctly identified Bitcoin as having no governing law. We don't hallucinate equations.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Is my data safe?</h3>
-        <p>Your data is processed locally and deleted after analysis. We never share or store your data.</p>
-      </div>
-    </div>
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p>&copy; 2026 ProtoScience</p>
+    <p>Built with scientific rigor.</p>
   </div>
-</section>
-
-<!-- ═══════════════ CONTACT ═══════════════ -->
-<section id="contact" class="section">
-  <div class="container">
-    <p class="lead">Ready to discover what's hiding in your data?</p>
-    <div class="contact-channels">
-      <a href="mailto:discovery@protoscience.ai">discovery@protoscience.ai</a>
-      <a href="https://x.com/" target="_blank" rel="noopener">DM on X</a>
-    </div>
-    <a href="mailto:discovery@protoscience.ai" class="cta">Send Your Data</a>
-  </div>
-</section>
-
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer>
-  <p><strong>ProtoScience</strong> &mdash; Autonomous Scientific Discovery</p>
-  <p>Built with Claude, PyTorch, and curiosity.</p>
 </footer>
+
+<!-- ── Navbar scroll effect ── -->
+<script>
+(function() {
+  var navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 10) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
