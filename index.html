@@ -710,6 +710,40 @@ a:hover { text-decoration: underline; }
   .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
   .container { padding: 0 20px; }
 }
+
+/* ── Live Discoveries ── */
+.live-card {
+  background: white;
+  border: 1px solid #DADCE0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.live-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.live-card canvas {
+  display: block;
+  width: 100%;
+  height: 250px;
+  background: white;
+}
+.live-card-info {
+  padding: 16px 20px;
+}
+.live-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+}
+.live-card-subtitle {
+  font-size: 13px;
+  color: #5F6368;
+  margin-top: 4px;
+}
+@media (max-width: 900px) {
+  .live-grid { grid-template-columns: 1fr !important; }
+}
 </style>
 </head>
 <body>
@@ -721,6 +755,7 @@ a:hover { text-decoration: underline; }
     <div class="navbar-links">
       <a href="#how" class="nav-text">How it Works</a>
       <a href="#example" class="nav-text">Examples</a>
+      <a href="#live" class="nav-text">Live Discoveries</a>
       <a href="#feed" class="nav-text">Latest Experiments</a>
       <a href="#usecases" class="nav-text">Use Cases</a>
       <a href="#cta" class="btn-primary">Upload Dataset</a>
@@ -894,6 +929,37 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ── LIVE DISCOVERIES ── -->
+<section id="live" style="padding:80px 0; background:#F8F9FA;">
+  <div class="container">
+    <h2 class="section-title">Live Discoveries</h2>
+    <p class="section-subtitle" style="text-align:center;color:#5F6368;margin-bottom:48px;">Watch ProtoScience discover physics in real time</p>
+    <div class="live-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+      <div class="live-card">
+        <canvas id="pendulum-canvas"></canvas>
+        <div class="live-card-info">
+          <div class="live-card-title">Chaotic Motion</div>
+          <div class="live-card-subtitle">Double pendulum — same rules, unpredictable paths</div>
+        </div>
+      </div>
+      <div class="live-card">
+        <canvas id="planets-canvas"></canvas>
+        <div class="live-card-info">
+          <div class="live-card-title">Gravitational Dynamics</div>
+          <div class="live-card-subtitle">Kepler's laws from position data alone</div>
+        </div>
+      </div>
+      <div class="live-card">
+        <canvas id="epidemic-canvas"></canvas>
+        <div class="live-card-info">
+          <div class="live-card-title">Epidemic Dynamics</div>
+          <div class="live-card-subtitle">SIR equations discovered from infection curves</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1484,6 +1550,188 @@ a:hover { text-decoration: underline; }
     if (e.detail) { if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); } }
     else { running = false; if (rafId) cancelAnimationFrame(rafId); }
   });
+})();
+</script>
+
+<!-- ── Live Discoveries animations ── -->
+<script>
+(function(){
+  // Intersection Observer: only animate when visible
+  var liveObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ e.target._liveVisible = e.isIntersecting; });
+  }, { threshold: 0.1 });
+
+  // ── 1. Double Pendulum ──
+  (function(){
+    var c = document.getElementById('pendulum-canvas'), ctx = c.getContext('2d');
+    liveObs.observe(c);
+    var g=9.81,L1=0.4,L2=0.4,m1=1,m2=1,th1=Math.PI/2,th2=Math.PI/1.2,w1=0,w2=0,dt=0.01;
+    var trail=[];
+    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
+    resize(); window.addEventListener('resize',resize);
+    function step(){
+      for(var i=0;i<4;i++){
+        var d=th1-th2,s=Math.sin(d),co=Math.cos(d);
+        var den1=L1*(2*m1+m2-m2*Math.cos(2*d));
+        var a1=(-g*(2*m1+m2)*Math.sin(th1)-m2*g*Math.sin(th1-2*th2)-2*s*m2*(w2*w2*L2+w1*w1*L1*co))/den1;
+        var a2=(2*s*(w1*w1*L1*(m1+m2)+g*(m1+m2)*Math.cos(th1)+w2*w2*L2*m2*co))/(L2*(2*m1+m2-m2*Math.cos(2*d)));
+        w1+=a1*dt; w2+=a2*dt; th1+=w1*dt; th2+=w2*dt;
+      }
+      var cx=c.width/4, cy=50, sc=200;
+      var x1=cx+L1*sc*Math.sin(th1), y1=cy+L1*sc*Math.cos(th1);
+      var x2=x1+L2*sc*Math.sin(th2), y2=y1+L2*sc*Math.cos(th2);
+      var spd=Math.sqrt(w1*w1+w2*w2);
+      trail.push({x:x2,y:y2,s:spd});
+      if(trail.length>300) trail.shift();
+      return {cx:cx,cy:cy,x1:x1,y1:y1,x2:x2,y2:y2};
+    }
+    function draw(){
+      if(!c._liveVisible){requestAnimationFrame(draw);return;}
+      var p=step(), W=c.width/2, H=250;
+      ctx.clearRect(0,0,W,H);
+      // trail
+      for(var i=1;i<trail.length;i++){
+        var t=trail[i], ratio=Math.min(t.s/8,1), alpha=i/trail.length*0.7;
+        var r=Math.round(66+(234-66)*ratio), g2=Math.round(133+(67-133)*ratio), b=Math.round(244+(53-244)*ratio);
+        ctx.strokeStyle='rgba('+r+','+g2+','+b+','+alpha.toFixed(2)+')';
+        ctx.lineWidth=1.5; ctx.beginPath();
+        ctx.moveTo(trail[i-1].x,trail[i-1].y); ctx.lineTo(t.x,t.y); ctx.stroke();
+      }
+      // arms
+      ctx.strokeStyle='#9AA0A6'; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.moveTo(p.cx,p.cy); ctx.lineTo(p.x1,p.y1); ctx.lineTo(p.x2,p.y2); ctx.stroke();
+      // joints
+      ctx.fillStyle='#4285F4';
+      ctx.beginPath(); ctx.arc(p.cx,p.cy,5,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x1,p.y1,4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x2,p.y2,4,0,Math.PI*2); ctx.fill();
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // ── 2. Planetary Orbits ──
+  (function(){
+    var c = document.getElementById('planets-canvas'), ctx = c.getContext('2d');
+    liveObs.observe(c);
+    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
+    resize(); window.addEventListener('resize',resize);
+    var planets=[
+      {a:45,e:0.12,period:2,color:'#4285F4',rgb:'66,133,244',r:3,trail:[]},
+      {a:75,e:0.15,period:4,color:'#34A853',rgb:'52,168,83',r:4,trail:[]},
+      {a:110,e:0.18,period:8,color:'#EA4335',rgb:'234,67,53',r:5,trail:[]}
+    ];
+    var start=performance.now();
+    function draw(){
+      if(!c._liveVisible){requestAnimationFrame(draw);return;}
+      var W=c.width/2, H=250, cx=W/2, cy=H/2;
+      var t=(performance.now()-start)/1000;
+      ctx.clearRect(0,0,W,H);
+      // star glow
+      var grd=ctx.createRadialGradient(cx,cy,2,cx,cy,18);
+      grd.addColorStop(0,'#FBBC04'); grd.addColorStop(0.5,'rgba(251,188,4,0.3)'); grd.addColorStop(1,'rgba(251,188,4,0)');
+      ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#FBBC04'; ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fill();
+      // orbit paths (dotted)
+      ctx.setLineDash([3,6]); ctx.strokeStyle='#E0E0E0'; ctx.lineWidth=1;
+      for(var i=0;i<planets.length;i++){
+        var p=planets[i];
+        ctx.beginPath(); ctx.ellipse(cx-p.a*p.e,cy,p.a,p.a*Math.sqrt(1-p.e*p.e),0,0,Math.PI*2); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      // planets
+      for(var i=0;i<planets.length;i++){
+        var p=planets[i], angle=t*2*Math.PI/p.period;
+        var x=cx+p.a*(Math.cos(angle)-p.e), y=cy+p.a*Math.sqrt(1-p.e*p.e)*Math.sin(angle);
+        p.trail.push({x:x,y:y}); if(p.trail.length>120) p.trail.shift();
+        for(var j=1;j<p.trail.length;j++){
+          ctx.strokeStyle='rgba('+p.rgb+','+(j/p.trail.length*0.5).toFixed(2)+')';
+          ctx.lineWidth=2; ctx.beginPath();
+          ctx.moveTo(p.trail[j-1].x,p.trail[j-1].y); ctx.lineTo(p.trail[j].x,p.trail[j].y); ctx.stroke();
+        }
+        ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(x,y,p.r,0,Math.PI*2); ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // ── 3. Epidemic SIR Grid ──
+  (function(){
+    var c = document.getElementById('epidemic-canvas'), ctx = c.getContext('2d');
+    liveObs.observe(c);
+    var COLS=20, ROWS=20, N=COLS*ROWS;
+    var grid, tsS=[], tsI=[], tsR=[], paused=0, maxTS=200;
+    function initGrid(){
+      grid=new Uint8Array(N); // 0=S,1=I,2=R
+      tsS=[]; tsI=[]; tsR=[];
+      for(var i=0;i<N;i++) grid[i]=0;
+      grid[Math.floor(ROWS/2)*COLS+Math.floor(COLS/2)]=1; // seed center
+    }
+    initGrid();
+    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
+    resize(); window.addEventListener('resize',resize);
+    function stepSIR(){
+      var next=new Uint8Array(grid);
+      for(var r=0;r<ROWS;r++) for(var col=0;col<COLS;col++){
+        var idx=r*COLS+col;
+        if(grid[idx]===0){ // susceptible: check neighbors
+          var nb=[[r-1,col],[r+1,col],[r,col-1],[r,col+1]];
+          for(var k=0;k<4;k++){
+            var nr=nb[k][0],nc=nb[k][1];
+            if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&grid[nr*COLS+nc]===1){
+              if(Math.random()<0.15) { next[idx]=1; break; }
+            }
+          }
+        } else if(grid[idx]===1){ // infected: recover
+          if(Math.random()<0.05) next[idx]=2;
+        }
+      }
+      grid=next;
+      var s=0,inf=0,rec=0;
+      for(var i=0;i<N;i++){if(grid[i]===0)s++;else if(grid[i]===1)inf++;else rec++;}
+      tsS.push(s/N); tsI.push(inf/N); tsR.push(rec/N);
+      if(tsS.length>maxTS){tsS.shift();tsI.shift();tsR.shift();}
+      return inf;
+    }
+    var frameCount=0;
+    function draw(){
+      if(!c._liveVisible){requestAnimationFrame(draw);return;}
+      var W=c.width/2, H=250;
+      ctx.clearRect(0,0,W,H);
+      frameCount++;
+      if(paused>0){ paused--; }
+      else if(frameCount%2===0){
+        var inf=stepSIR();
+        if(inf===0 && tsI.length>30){ paused=120; setTimeout(initGrid,2000); }
+      }
+      // draw grid
+      var gridSize=Math.min(W*0.45, H*0.85), cellW=gridSize/COLS, cellH=gridSize/ROWS;
+      var gx=(W*0.5-gridSize)/2, gy=(H-gridSize)/2;
+      var colors=['#4285F4','#EA4335','#34A853'];
+      for(var r=0;r<ROWS;r++) for(var col=0;col<COLS;col++){
+        var idx=r*COLS+col;
+        ctx.fillStyle=colors[grid[idx]];
+        ctx.beginPath(); ctx.arc(gx+col*cellW+cellW/2, gy+r*cellH+cellH/2, cellW*0.35, 0, Math.PI*2); ctx.fill();
+      }
+      // draw curves on right half
+      var pad=12, cw=W*0.45, ch=H-pad*2, cx0=W*0.55;
+      var mapX=function(i){return cx0+i/(maxTS-1)*cw;};
+      var mapY=function(v){return pad+ch-v*ch;};
+      var curves=[[tsS,'#4285F4'],[tsI,'#EA4335'],[tsR,'#34A853']];
+      for(var li=0;li<3;li++){
+        var arr=curves[li][0]; ctx.strokeStyle=curves[li][1]; ctx.lineWidth=2; ctx.beginPath();
+        for(var i=0;i<arr.length;i++){i===0?ctx.moveTo(mapX(i),mapY(arr[i])):ctx.lineTo(mapX(i),mapY(arr[i]));}
+        ctx.stroke();
+      }
+      ctx.font='10px Inter,sans-serif'; ctx.fillStyle='#5F6368';
+      ctx.fillStyle='#4285F4'; ctx.fillText('S',cx0,pad+10);
+      ctx.fillStyle='#EA4335'; ctx.fillText('I',cx0+14,pad+10);
+      ctx.fillStyle='#34A853'; ctx.fillText('R',cx0+26,pad+10);
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
 })();
 </script>
 
