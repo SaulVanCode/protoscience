@@ -89,6 +89,21 @@ a:hover { text-decoration: underline; }
 .hero {
   text-align: center;
   padding: 100px 32px 80px;
+  position: relative;
+  overflow: hidden;
+  background: #F8F9FA;
+}
+.hero > *:not(#hero-canvas) {
+  position: relative;
+  z-index: 1;
+}
+#hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 .hero-label {
   display: inline-block;
@@ -652,6 +667,7 @@ a:hover { text-decoration: underline; }
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <canvas id="hero-canvas"></canvas>
   <span class="hero-label">Automated Scientific Discovery</span>
   <h1>Discover governing equations from experimental data.</h1>
   <p class="hero-desc">Upload time-series data and automatically infer the mathematical laws that govern your system. No physics PhD required.</p>
@@ -984,6 +1000,151 @@ a:hover { text-decoration: underline; }
       });
     });
   });
+})();
+</script>
+
+<!-- ── Hero particle animation ── -->
+<script>
+(function() {
+  var canvas = document.getElementById('hero-canvas');
+  var ctx = canvas.getContext('2d');
+  var PARTICLE_COUNT = 80;
+  var CYCLE_DURATION = 12; // seconds
+  var particles = [];
+  var mouseX = -9999, mouseY = -9999;
+
+  function resize() {
+    var hero = canvas.parentElement;
+    canvas.width = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  canvas.addEventListener('mousemove', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+  });
+  canvas.addEventListener('mouseleave', function() {
+    mouseX = -9999;
+    mouseY = -9999;
+  });
+
+  function Particle(i) {
+    this.i = i;
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.baseX = this.x;
+    this.baseY = this.y;
+    this.size = 2 + Math.random() * 4;
+    this.opacity = 0.3 + Math.random() * 0.6;
+    this.color = Math.random() > 0.5 ? '#1A73E8' : '#4285F4';
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+  }
+
+  for (var i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push(new Particle(i));
+  }
+
+  function getSineTarget(index) {
+    var frac = index / PARTICLE_COUNT;
+    var tx = canvas.width * 0.1 + frac * canvas.width * 0.8;
+    var ty = canvas.height / 2 + Math.sin(frac * 4 * Math.PI) * canvas.height * 0.15;
+    return { x: tx, y: ty };
+  }
+
+  function animate() {
+    var t = (performance.now() / 1000) % CYCLE_DURATION;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Determine lerp factor toward sine target
+    var lerpToSine = 0;
+    if (t < 3) {
+      // Phase 1: scatter, gentle drift
+      lerpToSine = 0;
+    } else if (t < 6) {
+      // Phase 2: converging (ease in)
+      lerpToSine = (t - 3) / 3;
+      lerpToSine = lerpToSine * lerpToSine; // ease-in
+    } else if (t < 8) {
+      // Phase 3: formed, pulse
+      lerpToSine = 1;
+    } else {
+      // Phase 4: dispersing
+      lerpToSine = 1 - ((t - 8) / 4);
+      lerpToSine = Math.max(0, lerpToSine * lerpToSine);
+    }
+
+    for (var i = 0; i < PARTICLE_COUNT; i++) {
+      var p = particles[i];
+      var target = getSineTarget(i);
+
+      // Blend between scatter position and sine target
+      var goalX = p.baseX + (target.x - p.baseX) * lerpToSine;
+      var goalY = p.baseY + (target.y - p.baseY) * lerpToSine;
+
+      // Drift scatter positions slowly
+      p.baseX += p.vx;
+      p.baseY += p.vy;
+      // Bounce off edges
+      if (p.baseX < 0 || p.baseX > canvas.width) p.vx *= -1;
+      if (p.baseY < 0 || p.baseY > canvas.height) p.vy *= -1;
+      p.baseX = Math.max(0, Math.min(canvas.width, p.baseX));
+      p.baseY = Math.max(0, Math.min(canvas.height, p.baseY));
+
+      // Lerp current position toward goal
+      p.x += (goalX - p.x) * 0.04;
+      p.y += (goalY - p.y) * 0.04;
+
+      // Mouse repulsion
+      var mdx = p.x - mouseX;
+      var mdy = p.y - mouseY;
+      var md = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (md < 100 && md > 0) {
+        var force = (100 - md) / 100 * 3;
+        p.x += (mdx / md) * force;
+        p.y += (mdy / md) * force;
+      }
+
+      // Pulse effect during phase 3
+      var sizeMultiplier = 1;
+      if (t >= 6 && t < 8) {
+        sizeMultiplier = 1 + 0.15 * Math.sin((t - 6) * Math.PI * 2);
+      }
+
+      // Draw particle
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * sizeMultiplier, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.opacity;
+      ctx.fill();
+    }
+
+    // Connection lines
+    ctx.strokeStyle = '#1A73E8';
+    ctx.lineWidth = 1;
+    for (var i = 0; i < PARTICLE_COUNT; i++) {
+      for (var j = i + 1; j < PARTICLE_COUNT; j++) {
+        var dx = particles[i].x - particles[j].x;
+        var dy = particles[i].y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          ctx.globalAlpha = 0.08 * (1 - dist / 100);
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
 })();
 </script>
 
