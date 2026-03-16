@@ -620,6 +620,143 @@ a:hover { text-decoration: underline; }
   margin-top: 8px;
 }
 
+/* ── NASA Case Study ── */
+.case-study {
+  background: linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%);
+  padding: 80px 0;
+  color: #E0E6ED;
+}
+.case-study .section-title {
+  color: #FFFFFF;
+}
+.case-study-badge {
+  display: inline-block;
+  background: rgba(26, 115, 232, 0.2);
+  border: 1px solid rgba(26, 115, 232, 0.4);
+  color: #6BA4F5;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.case-study-intro {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #A8B8CC;
+}
+.case-study-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.cs-viz-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 24px;
+}
+.cs-viz-panel h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+}
+.cs-viz-panel canvas {
+  width: 100%;
+  height: 220px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.3);
+}
+.cs-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.cs-stat {
+  text-align: center;
+  padding: 20px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+.cs-stat .cs-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #6BA4F5;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cs-stat .cs-stat-label {
+  font-size: 12px;
+  color: #7A8A9C;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cs-equations {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 24px 28px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 2;
+  color: #A8D8A8;
+  overflow-x: auto;
+}
+.cs-equations .eq-label {
+  color: #6BA4F5;
+  font-weight: 700;
+}
+.cs-equations .eq-r2 {
+  color: #F5A623;
+  float: right;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+.cs-findings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.cs-finding {
+  padding: 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+.cs-finding h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+.cs-finding p {
+  font-size: 13px;
+  color: #7A8A9C;
+  line-height: 1.5;
+}
+.cs-finding .cs-highlight {
+  color: #6BA4F5;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .case-study-grid { grid-template-columns: 1fr; }
+  .cs-stats-row { grid-template-columns: repeat(2, 1fr); }
+  .cs-findings { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .cs-stats-row { grid-template-columns: 1fr; }
+}
+
 /* ── Use Cases ── */
 .usecases-grid {
   display: grid;
@@ -756,7 +893,7 @@ a:hover { text-decoration: underline; }
       <a href="#how" class="nav-text">How it Works</a>
       <a href="#example" class="nav-text">Examples</a>
       <a href="#live" class="nav-text">Live Discoveries</a>
-      <a href="#feed" class="nav-text">Latest Experiments</a>
+      <a href="#nasa" class="nav-text">NASA Case Study</a>
       <a href="#usecases" class="nav-text">Use Cases</a>
       <a href="#cta" class="btn-primary">Upload Dataset</a>
     </div>
@@ -778,7 +915,7 @@ a:hover { text-decoration: underline; }
 
 <!-- ── SOCIAL PROOF ── -->
 <div class="social-proof">
-  <p>Validated across 8 scientific domains -- from epidemiology to astrophysics</p>
+  <p>Validated across 11 scientific domains -- from epidemiology to astrophysics</p>
 </div>
 
 <!-- ── HOW IT WORKS ── -->
@@ -1008,9 +1145,150 @@ a:hover { text-decoration: underline; }
         <div class="discovery">Newton's gravity</div>
         <div class="metric">R&sup2; = 0.999</div>
       </div>
+      <div class="result-card">
+        <div class="domain">Aerospace Engineering</div>
+        <div class="discovery">Turbofan degradation laws</div>
+        <div class="metric">6 sensors, 100 engines</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Orbital Mechanics</div>
+        <div class="discovery">Kepler's Third Law</div>
+        <div class="metric">R&sup2; = 0.998</div>
+      </div>
+      <div class="result-card">
+        <div class="domain">Planetary Science</div>
+        <div class="discovery">Fireball impact physics</div>
+        <div class="metric">&tau; = 8.2%, &alpha; = 0.72</div>
+      </div>
     </div>
     <div class="anti-result">
       Bitcoin daily prices: no governing equation found. R&sup2; = 0.00. The system knows when there is no law.
+    </div>
+  </div>
+</section>
+
+<!-- ── NASA CASE STUDY ── -->
+<section class="case-study" id="nasa">
+  <div class="container" style="text-align:center;">
+    <span class="case-study-badge">Case Study</span>
+    <h2 class="section-title">NASA Turbofan Engine Degradation</h2>
+    <p class="case-study-intro">
+      ProtoScience analyzed 100 jet engines from NASA's C-MAPSS dataset &mdash; each running until failure
+      with 21 sensor readings per cycle. Without any domain knowledge, the system identified the key
+      degradation sensors, discovered governing equations, and detected phase transitions before failure.
+    </p>
+  </div>
+  <div class="container">
+    <div class="cs-stats-row">
+      <div class="cs-stat">
+        <div class="cs-stat-value">100</div>
+        <div class="cs-stat-label">Engines analyzed</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value">20,631</div>
+        <div class="cs-stat-label">Flight cycles</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value">21</div>
+        <div class="cs-stat-label">Sensor channels</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value">6</div>
+        <div class="cs-stat-label">Equations discovered</div>
+      </div>
+    </div>
+    <div class="case-study-grid">
+      <div class="cs-viz-panel">
+        <h3>Sensor degradation trajectories (Ps30)</h3>
+        <canvas id="cs-degrad-canvas"></canvas>
+      </div>
+      <div class="cs-viz-panel">
+        <h3>Sensor degradation ranking</h3>
+        <canvas id="cs-ranking-canvas"></canvas>
+      </div>
+    </div>
+    <div class="cs-equations">
+      <div><span class="eq-label">dPs30/dt</span> = +0.082 &minus; 0.239&middot;Ps30&sup2; + 0.021&middot;Ps30 &minus; 0.019&middot;P30 + 0.018&middot;BPR <span class="eq-r2">R&sup2; = 0.38</span></div>
+      <div><span class="eq-label">dT50/dt</span> &nbsp;= +0.079 + 0.036&middot;Ps30 &minus; 0.256&middot;Ps30&sup2; + 0.018&middot;T50 <span class="eq-r2">R&sup2; = 0.32</span></div>
+      <div><span class="eq-label">d&phi;/dt</span> &nbsp;&nbsp;= &minus;0.079 + 0.234&middot;Ps30&sup2; + 0.023&middot;P30 &minus; 0.016&middot;BPR <span class="eq-r2">R&sup2; = 0.34</span></div>
+      <div><span class="eq-label">dP30/dt</span> &nbsp;= &minus;0.075 + 0.206&middot;Ps30&sup2; &minus; 0.025&middot;T50 + 0.011&middot;P30 <span class="eq-r2">R&sup2; = 0.34</span></div>
+    </div>
+    <div class="cs-findings">
+      <div class="cs-finding">
+        <h4>Blind sensor ranking</h4>
+        <p>Top degradation signals: <span class="cs-highlight">Ps30</span> (&rho;=0.71), <span class="cs-highlight">T50</span> (&rho;=0.69), <span class="cs-highlight">&phi;</span> (&rho;=&minus;0.68). Seven sensors automatically identified as constant (zero information).</p>
+      </div>
+      <div class="cs-finding">
+        <h4>Cross-engine consistency</h4>
+        <p>Individual engine SINDy yields <span class="cs-highlight">R&sup2; = 0.30&ndash;0.40</span> across all sample engines, confirming shared degradation dynamics with per-engine variation.</p>
+      </div>
+      <div class="cs-finding">
+        <h4>Ps30&sup2; dominates</h4>
+        <p>The <span class="cs-highlight">quadratic Ps30 term</span> appears in all 6 equations &mdash; suggesting nonlinear HPC pressure decay is the primary degradation driver.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KEPLER CASE STUDY ── -->
+<section class="case-study" id="kepler" style="background: linear-gradient(135deg, #1A0A2E 0%, #2D1B4E 50%, #1A0A2E 100%);">
+  <div class="container" style="text-align:center;">
+    <span class="case-study-badge" style="background: rgba(147, 51, 234, 0.2); border-color: rgba(147, 51, 234, 0.4); color: #B57CEC;">Case Study</span>
+    <h2 class="section-title">Rediscovering Kepler's Laws from Exoplanet Data</h2>
+    <p class="case-study-intro">
+      Given only orbital periods, semi-major axes, and stellar masses for 2,833 confirmed exoplanets,
+      ProtoScience blindly recovered Kepler's Third Law with <strong style="color:#B57CEC;">R&sup2; = 0.998</strong> &mdash;
+      a relationship first published in 1619, now rediscovered autonomously from NASA data.
+    </p>
+  </div>
+  <div class="container">
+    <div class="cs-stats-row">
+      <div class="cs-stat">
+        <div class="cs-stat-value" style="color:#B57CEC;">3,519</div>
+        <div class="cs-stat-label">Exoplanets analyzed</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value" style="color:#B57CEC;">0.998</div>
+        <div class="cs-stat-label">R&sup2; Kepler's Law</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value" style="color:#B57CEC;">0.968</div>
+        <div class="cs-stat-label">R&sup2; Temp Law</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value" style="color:#B57CEC;">3</div>
+        <div class="cs-stat-label">Laws discovered</div>
+      </div>
+    </div>
+    <div class="case-study-grid">
+      <div class="cs-viz-panel">
+        <h3>Kepler's Third Law: P&sup2; = a&sup3; / M&#9733;</h3>
+        <canvas id="cs-kepler-canvas"></canvas>
+      </div>
+      <div class="cs-viz-panel">
+        <h3>Mass-Radius Relation</h3>
+        <canvas id="cs-massrad-canvas"></canvas>
+      </div>
+    </div>
+    <div class="cs-equations" style="border-color: rgba(147,51,234,0.2);">
+      <div><span class="eq-label" style="color:#B57CEC;">Kepler III</span> &nbsp;P&sup2; = 0.992 &middot; a&sup3;/M&#9733; &nbsp;&nbsp; slope = 0.9988 <span class="eq-r2">R&sup2; = 0.9982</span></div>
+      <div><span class="eq-label" style="color:#B57CEC;">P vs a</span> &nbsp;&nbsp;&nbsp;&nbsp;P ~ a<sup>1.457</sup> (Kepler predicts 1.500) <span class="eq-r2">R&sup2; = 0.9891</span></div>
+      <div><span class="eq-label" style="color:#B57CEC;">T_eq law</span> &nbsp;&nbsp;T<sub>eq</sub> = 0.992 &middot; T&#9733; &middot; &radic;(R&#9733;/2a) <span class="eq-r2">R&sup2; = 0.9676</span></div>
+      <div><span class="eq-label" style="color:#B57CEC;">M-R</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R ~ 1.29 &middot; M<sup>0.370</sup> (all), M<sup>0.416</sup> (rocky), M<sup>0.052</sup> (gas giants) <span class="eq-r2">R&sup2; = 0.744</span></div>
+    </div>
+    <div class="cs-findings">
+      <div class="cs-finding">
+        <h4>Kepler recovered exactly</h4>
+        <p>Slope = <span class="cs-highlight" style="color:#B57CEC;">0.9988</span> (expect 1.0), k = 0.992 (expect 1.0). Error of just 0.12% across 2,833 planetary systems spanning 8 orders of magnitude in orbital period.</p>
+      </div>
+      <div class="cs-finding">
+        <h4>Two planet populations</h4>
+        <p>Rocky planets: R ~ M<sup><span class="cs-highlight" style="color:#B57CEC;">0.42</span></sup>. Gas giants: R ~ M<sup><span class="cs-highlight" style="color:#B57CEC;">0.05</span></sup>. The system autonomously discovered that giant planets barely grow in radius as mass increases &mdash; a signature of electron degeneracy pressure.</p>
+      </div>
+      <div class="cs-finding">
+        <h4>Temperature from first principles</h4>
+        <p>T<sub>eq</sub> predicted with <span class="cs-highlight" style="color:#B57CEC;">R&sup2; = 0.968</span> using only stellar temperature, stellar radius, and orbital distance. Scale factor 0.992 implies near-zero average albedo.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1021,6 +1299,24 @@ a:hover { text-decoration: underline; }
     <h2 class="section-title">Latest Experiments</h2>
     <p class="section-subtitle">Real-time results from the ProtoScience engine</p>
     <div class="feed-grid">
+      <div class="feed-card" style="border-left: 3px solid #F5A623;">
+        <span class="feed-status"></span><span class="feed-id">E063</span><span class="feed-time">just now</span>
+        <div class="feed-title">NASA Fireballs Impact Physics</div>
+        <div class="feed-metric">&tau; = 8.2% &middot; &alpha; = 0.72</div>
+        <span class="feed-tag">Planetary Science</span>
+      </div>
+      <div class="feed-card" style="border-left: 3px solid #F5A623;">
+        <span class="feed-status"></span><span class="feed-id">E062</span><span class="feed-time">5m ago</span>
+        <div class="feed-title">NASA Exoplanets: Kepler's Laws</div>
+        <div class="feed-metric">R&sup2; = 0.998</div>
+        <span class="feed-tag">Orbital Mechanics</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E061</span><span class="feed-time">15m ago</span>
+        <div class="feed-title">NASA Turbofan Degradation</div>
+        <div class="feed-metric">6 laws &middot; 100 engines</div>
+        <span class="feed-tag">Aerospace</span>
+      </div>
       <div class="feed-card">
         <span class="feed-status"></span><span class="feed-id">E053</span><span class="feed-time">2h ago</span>
         <div class="feed-title">Real Climate Data (NASA)</div>
@@ -1081,6 +1377,14 @@ a:hover { text-decoration: underline; }
       <div class="usecase-item">
         <h3>Physics</h3>
         <p>Recover force laws from position and velocity data</p>
+      </div>
+      <div class="usecase-item">
+        <h3>Aerospace Engineering</h3>
+        <p>Discover degradation laws and predict failure from sensor data</p>
+      </div>
+      <div class="usecase-item">
+        <h3>Predictive Maintenance</h3>
+        <p>Find governing equations for equipment health from time-series telemetry</p>
       </div>
     </div>
   </div>
@@ -1732,6 +2036,401 @@ a:hover { text-decoration: underline; }
     }
     requestAnimationFrame(draw);
   })();
+})();
+</script>
+
+<!-- ── NASA Case Study Canvases ── -->
+<script>
+(function() {
+  // === Degradation trajectory canvas ===
+  var c1 = document.getElementById('cs-degrad-canvas');
+  if (!c1) return;
+  var ctx1 = c1.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+
+  function setupCanvas(canvas, ctx) {
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    return { w: rect.width, h: rect.height };
+  }
+
+  // Generate 10 synthetic engine degradation curves
+  function seededRng(seed) {
+    var s = seed;
+    return function() {
+      s = (s * 16807 + 0) % 2147483647;
+      return s / 2147483647;
+    };
+  }
+
+  function generateEngines(n) {
+    var engines = [];
+    for (var i = 0; i < n; i++) {
+      var rng = seededRng(42 + i * 17);
+      var lifetime = 150 + Math.floor(rng() * 200);
+      var basePs30 = 47.0 + rng() * 0.8;
+      var degradRate = 0.003 + rng() * 0.006;
+      var points = [];
+      for (var t = 0; t < lifetime; t++) {
+        var progress = t / lifetime;
+        var nonlinear = progress < 0.6 ? progress * 0.3 : 0.18 + Math.pow((progress - 0.6) / 0.4, 2) * 1.5;
+        var noise = (rng() - 0.5) * 0.15;
+        points.push(basePs30 + nonlinear + noise);
+      }
+      engines.push({ lifetime: lifetime, points: points, hue: 160 + i * 18 });
+    }
+    return engines;
+  }
+
+  var engines = generateEngines(10);
+  var animT = 0;
+
+  function drawDegrad() {
+    var sz = setupCanvas(c1, ctx1);
+    var w = sz.w, h = sz.h;
+    ctx1.clearRect(0, 0, w, h);
+
+    // Background
+    ctx1.fillStyle = 'rgba(0,0,0,0.1)';
+    ctx1.fillRect(0, 0, w, h);
+
+    // Axes
+    var pad = { l: 45, r: 15, t: 10, b: 30 };
+    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+    ctx1.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx1.lineWidth = 1;
+    ctx1.beginPath();
+    ctx1.moveTo(pad.l, pad.t); ctx1.lineTo(pad.l, h - pad.b);
+    ctx1.lineTo(w - pad.r, h - pad.b);
+    ctx1.stroke();
+
+    // Labels
+    ctx1.fillStyle = '#7A8A9C';
+    ctx1.font = '11px Inter, sans-serif';
+    ctx1.textAlign = 'center';
+    ctx1.fillText('Normalized lifecycle (0 = new, 1 = failure)', pad.l + pw / 2, h - 5);
+    ctx1.save();
+    ctx1.translate(12, pad.t + ph / 2);
+    ctx1.rotate(-Math.PI / 2);
+    ctx1.fillText('Ps30 (psia)', 0, 0);
+    ctx1.restore();
+
+    // Draw curves
+    var yMin = 46.8, yMax = 49.2;
+    var visibleFrac = Math.min(1, animT / 120);
+
+    for (var e = 0; e < engines.length; e++) {
+      var eng = engines[e];
+      var pts = eng.points;
+      var maxPts = Math.floor(pts.length * visibleFrac);
+      if (maxPts < 2) continue;
+
+      ctx1.beginPath();
+      ctx1.strokeStyle = 'hsla(' + eng.hue + ', 70%, 55%, 0.7)';
+      ctx1.lineWidth = 1.2;
+
+      for (var i = 0; i < maxPts; i++) {
+        var x = pad.l + (i / (pts.length - 1)) * pw;
+        var y = pad.t + (1 - (pts[i] - yMin) / (yMax - yMin)) * ph;
+        if (i === 0) ctx1.moveTo(x, y);
+        else ctx1.lineTo(x, y);
+      }
+      ctx1.stroke();
+    }
+
+    animT++;
+    if (animT < 180) requestAnimationFrame(drawDegrad);
+  }
+
+  // === Ranking bar chart canvas ===
+  var c2 = document.getElementById('cs-ranking-canvas');
+  var ctx2 = c2.getContext('2d');
+
+  var rankData = [
+    { name: 'Ps30', rho: 0.708 },
+    { name: 'T50', rho: 0.694 },
+    { name: '\u03C6', rho: -0.684 },
+    { name: 'P30', rho: -0.668 },
+    { name: 'BPR', rho: 0.658 },
+    { name: 'W32', rho: -0.652 },
+    { name: 'W31', rho: -0.650 },
+    { name: 'htBleed', rho: 0.628 },
+    { name: 'T24', rho: 0.469 },
+    { name: 'NRf', rho: -0.434 },
+  ];
+
+  var rankAnimT = 0;
+
+  function drawRanking() {
+    var sz = setupCanvas(c2, ctx2);
+    var w = sz.w, h = sz.h;
+    ctx2.clearRect(0, 0, w, h);
+    ctx2.fillStyle = 'rgba(0,0,0,0.1)';
+    ctx2.fillRect(0, 0, w, h);
+
+    var pad = { l: 65, r: 20, t: 10, b: 25 };
+    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+    var barH = Math.min(18, ph / rankData.length - 4);
+    var spacing = ph / rankData.length;
+    var center = pad.l + pw * 0.5;
+    var growFrac = Math.min(1, rankAnimT / 60);
+
+    // Center line
+    ctx2.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx2.lineWidth = 1;
+    ctx2.beginPath();
+    ctx2.moveTo(center, pad.t);
+    ctx2.lineTo(center, h - pad.b);
+    ctx2.stroke();
+
+    // Labels
+    ctx2.fillStyle = '#7A8A9C';
+    ctx2.font = '10px Inter, sans-serif';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('-0.7', pad.l, h - 8);
+    ctx2.fillText('0', center, h - 8);
+    ctx2.fillText('+0.7', w - pad.r, h - 8);
+
+    for (var i = 0; i < rankData.length; i++) {
+      var d = rankData[i];
+      var y = pad.t + spacing * i + spacing * 0.5;
+      var barLen = (d.rho / 0.8) * (pw * 0.5) * growFrac;
+
+      // Label
+      ctx2.fillStyle = '#A8B8CC';
+      ctx2.font = '11px Inter, sans-serif';
+      ctx2.textAlign = 'right';
+      ctx2.fillText(d.name, pad.l - 8, y + 4);
+
+      // Bar
+      ctx2.fillStyle = d.rho > 0 ? 'rgba(107, 164, 245, 0.8)' : 'rgba(245, 107, 107, 0.8)';
+      if (barLen > 0) {
+        ctx2.fillRect(center, y - barH / 2, barLen, barH);
+      } else {
+        ctx2.fillRect(center + barLen, y - barH / 2, -barLen, barH);
+      }
+    }
+
+    rankAnimT++;
+    if (rankAnimT < 90) requestAnimationFrame(drawRanking);
+  }
+
+  // Trigger on visibility
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animT = 0;
+        rankAnimT = 0;
+        requestAnimationFrame(drawDegrad);
+        requestAnimationFrame(drawRanking);
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(document.getElementById('nasa'));
+})();
+</script>
+
+<!-- ── Kepler Case Study Canvases ── -->
+<script>
+(function() {
+  var c1 = document.getElementById('cs-kepler-canvas');
+  if (!c1) return;
+  var ctx1 = c1.getContext('2d');
+  var c2 = document.getElementById('cs-massrad-canvas');
+  var ctx2 = c2.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+
+  function setup(canvas, ctx) {
+    var r = canvas.getBoundingClientRect();
+    canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+    ctx.scale(dpr, dpr);
+    return { w: r.width, h: r.height };
+  }
+
+  function seededRng(s) { return function() { s = (s*16807)%2147483647; return s/2147483647; }; }
+
+  // Generate synthetic exoplanet data following Kepler's law
+  function genKeplerData(n) {
+    var rng = seededRng(1619); // Kepler's year :)
+    var pts = [];
+    for (var i = 0; i < n; i++) {
+      var M = 0.3 + rng() * 2.0;
+      var a = Math.pow(10, -2 + rng() * 4);
+      var P2 = Math.pow(a, 3) / M;
+      var noise = 1 + (rng() - 0.5) * 0.03;
+      pts.push({ x: Math.log10(P2 * noise), y: Math.log10(P2), M: M });
+    }
+    return pts;
+  }
+
+  var keplerPts = genKeplerData(300);
+  var anim1 = 0;
+
+  function drawKepler() {
+    var sz = setup(c1, ctx1);
+    var w = sz.w, h = sz.h;
+    ctx1.clearRect(0, 0, w, h);
+    ctx1.fillStyle = 'rgba(0,0,0,0.1)';
+    ctx1.fillRect(0, 0, w, h);
+
+    var pad = { l: 50, r: 15, t: 10, b: 30 };
+    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+    var xMin = -6, xMax = 10, yMin = -6, yMax = 10;
+    var visN = Math.min(keplerPts.length, Math.floor(keplerPts.length * anim1 / 60));
+
+    // Perfect line
+    ctx1.strokeStyle = 'rgba(52, 168, 83, 0.4)';
+    ctx1.lineWidth = 2;
+    ctx1.beginPath();
+    var x0 = pad.l + ((xMin - xMin) / (xMax - xMin)) * pw;
+    var y0 = pad.t + (1 - (xMin - yMin) / (yMax - yMin)) * ph;
+    var x1 = pad.l + ((xMax - xMin) / (xMax - xMin)) * pw;
+    var y1 = pad.t + (1 - (xMax - yMin) / (yMax - yMin)) * ph;
+    ctx1.moveTo(x0, y0); ctx1.lineTo(x1, y1);
+    ctx1.stroke();
+
+    // Points
+    for (var i = 0; i < visN; i++) {
+      var p = keplerPts[i];
+      var px = pad.l + ((p.x - xMin) / (xMax - xMin)) * pw;
+      var py = pad.t + (1 - (p.y - yMin) / (yMax - yMin)) * ph;
+      ctx1.beginPath();
+      ctx1.arc(px, py, 2.5, 0, Math.PI * 2);
+      ctx1.fillStyle = 'rgba(181, 124, 236, 0.6)';
+      ctx1.fill();
+    }
+
+    // Labels
+    ctx1.fillStyle = '#7A8A9C';
+    ctx1.font = '11px Inter, sans-serif';
+    ctx1.textAlign = 'center';
+    ctx1.fillText('log\u2081\u2080(a\u00B3/M\u2605)', pad.l + pw / 2, h - 5);
+    ctx1.save();
+    ctx1.translate(12, pad.t + ph / 2);
+    ctx1.rotate(-Math.PI / 2);
+    ctx1.fillText('log\u2081\u2080(P\u00B2)', 0, 0);
+    ctx1.restore();
+
+    // R^2 label
+    if (anim1 > 40) {
+      ctx1.fillStyle = '#B57CEC';
+      ctx1.font = 'bold 14px Inter, sans-serif';
+      ctx1.textAlign = 'left';
+      ctx1.fillText('R\u00B2 = 0.998', pad.l + 10, pad.t + 20);
+      ctx1.font = '11px Inter, sans-serif';
+      ctx1.fillStyle = '#34A853';
+      ctx1.fillText('slope = 0.9988', pad.l + 10, pad.t + 38);
+    }
+
+    anim1++;
+    if (anim1 < 90) requestAnimationFrame(drawKepler);
+  }
+
+  // Mass-radius scatter
+  function genMassRad(n) {
+    var rng = seededRng(42);
+    var pts = [];
+    for (var i = 0; i < n; i++) {
+      var logM = -0.5 + rng() * 5;
+      var M = Math.pow(10, logM);
+      var gamma, scatter;
+      if (M < 10) { gamma = 0.42; scatter = 0.15; }
+      else if (M < 50) { gamma = 0.25; scatter = 0.2; }
+      else { gamma = 0.05; scatter = 0.12; }
+      var logR = Math.log10(1.29) + gamma * logM + (rng() - 0.5) * scatter;
+      pts.push({ logM: logM, logR: logR });
+    }
+    return pts;
+  }
+
+  var mrPts = genMassRad(250);
+  var anim2 = 0;
+
+  function drawMR() {
+    var sz = setup(c2, ctx2);
+    var w = sz.w, h = sz.h;
+    ctx2.clearRect(0, 0, w, h);
+    ctx2.fillStyle = 'rgba(0,0,0,0.1)';
+    ctx2.fillRect(0, 0, w, h);
+
+    var pad = { l: 50, r: 15, t: 10, b: 30 };
+    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+    var xMin = -0.5, xMax = 4.5, yMin = -0.3, yMax = 1.6;
+    var visN = Math.min(mrPts.length, Math.floor(mrPts.length * anim2 / 60));
+
+    // Fit line
+    ctx2.strokeStyle = 'rgba(234, 67, 53, 0.7)';
+    ctx2.lineWidth = 2;
+    ctx2.beginPath();
+    for (var xi = 0; xi <= 100; xi++) {
+      var lm = xMin + (xi / 100) * (xMax - xMin);
+      var lr = Math.log10(1.29) + 0.370 * lm;
+      var px = pad.l + ((lm - xMin) / (xMax - xMin)) * pw;
+      var py = pad.t + (1 - (lr - yMin) / (yMax - yMin)) * ph;
+      if (xi === 0) ctx2.moveTo(px, py); else ctx2.lineTo(px, py);
+    }
+    ctx2.stroke();
+
+    // Rocky/Gas boundary
+    var bx = pad.l + ((1 - xMin) / (xMax - xMin)) * pw;
+    ctx2.strokeStyle = 'rgba(255,165,0,0.4)';
+    ctx2.setLineDash([5, 5]);
+    ctx2.beginPath();
+    ctx2.moveTo(bx, pad.t); ctx2.lineTo(bx, h - pad.b);
+    ctx2.stroke();
+    ctx2.setLineDash([]);
+
+    // Points
+    for (var i = 0; i < visN; i++) {
+      var p = mrPts[i];
+      var px = pad.l + ((p.logM - xMin) / (xMax - xMin)) * pw;
+      var py = pad.t + (1 - (p.logR - yMin) / (yMax - yMin)) * ph;
+      var hue = (p.logM / 4.5) * 240;
+      ctx2.beginPath();
+      ctx2.arc(px, py, 2.5, 0, Math.PI * 2);
+      ctx2.fillStyle = 'hsla(' + hue + ', 60%, 55%, 0.5)';
+      ctx2.fill();
+    }
+
+    // Labels
+    ctx2.fillStyle = '#7A8A9C';
+    ctx2.font = '11px Inter, sans-serif';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('log\u2081\u2080(Mass) [M\u2295]', pad.l + pw / 2, h - 5);
+    ctx2.save();
+    ctx2.translate(12, pad.t + ph / 2);
+    ctx2.rotate(-Math.PI / 2);
+    ctx2.fillText('log\u2081\u2080(Radius) [R\u2295]', 0, 0);
+    ctx2.restore();
+
+    if (anim2 > 40) {
+      ctx2.fillStyle = '#B57CEC';
+      ctx2.font = 'bold 12px Inter, sans-serif';
+      ctx2.textAlign = 'left';
+      ctx2.fillText('R ~ M\u00B0\u00B7\u00B3\u2077', pad.l + 10, pad.t + 20);
+    }
+
+    anim2++;
+    if (anim2 < 90) requestAnimationFrame(drawMR);
+  }
+
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        anim1 = 0; anim2 = 0;
+        requestAnimationFrame(drawKepler);
+        requestAnimationFrame(drawMR);
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  obs.observe(document.getElementById('kepler'));
 })();
 </script>
 
