@@ -1064,19 +1064,13 @@ a:hover { text-decoration: underline; }
       panels.forEach(function(p) { p.classList.remove('active'); });
       tab.classList.add('active');
       var panel = document.getElementById('panel-' + target);
-      window.dispatchEvent(new CustomEvent('lv-tab', { detail: target === 'predator' }));
-      window.dispatchEvent(new CustomEvent('sir-tab', { detail: target === 'epidemic' }));
-      window.dispatchEvent(new CustomEvent('orbit-tab', { detail: target === 'orbits' }));
-      if (target === 'predator' || target === 'epidemic' || target === 'orbits') {
-        panel.classList.add('active');
-      } else {
-        var clone = panel.innerHTML;
-        panel.innerHTML = '';
-        requestAnimationFrame(function() {
-          panel.innerHTML = clone;
-          panel.classList.add('active');
-        });
-      }
+      panel.classList.add('active');
+      // Delay events slightly so panel is visible and canvas can get dimensions
+      setTimeout(function() {
+        window.dispatchEvent(new CustomEvent('lv-tab', { detail: target === 'predator' }));
+        window.dispatchEvent(new CustomEvent('sir-tab', { detail: target === 'epidemic' }));
+        window.dispatchEvent(new CustomEvent('orbit-tab', { detail: target === 'orbits' }));
+      }, 50);
     });
   });
 })();
@@ -1357,11 +1351,12 @@ a:hover { text-decoration: underline; }
     rafId = requestAnimationFrame(draw);
   }
 
-  rafId = requestAnimationFrame(draw);
+  // Delay start to ensure layout is complete
+  setTimeout(function() { resize(); rafId = requestAnimationFrame(draw); }, 200);
 
   window.addEventListener('lv-tab', function(e) {
     if (e.detail) {
-      if (!running) { running = true; rafId = requestAnimationFrame(draw); }
+      if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); }
     } else {
       running = false; if (rafId) cancelAnimationFrame(rafId);
     }
