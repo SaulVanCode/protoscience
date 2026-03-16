@@ -561,6 +561,65 @@ a:hover { text-decoration: underline; }
   line-height: 1.6;
 }
 
+/* ── Latest Experiments Feed ── */
+.section-subtitle {
+  font-size: 18px;
+  color: #5F6368;
+  text-align: center;
+  margin-top: -40px;
+  margin-bottom: 48px;
+}
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.feed-card {
+  background: #FFFFFF;
+  border: 1px solid #DADCE0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: box-shadow 0.2s;
+}
+.feed-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.feed-status {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #34A853;
+  margin-right: 8px;
+}
+.feed-id {
+  font-weight: 600;
+  color: #202124;
+}
+.feed-title {
+  color: #5F6368;
+  font-size: 14px;
+  margin: 4px 0;
+}
+.feed-metric {
+  font-weight: 600;
+  color: #1A73E8;
+  font-size: 15px;
+}
+.feed-time {
+  color: #9AA0A6;
+  font-size: 12px;
+  float: right;
+}
+.feed-tag {
+  display: inline-block;
+  background: #E8F0FE;
+  color: #1A73E8;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
 /* ── Use Cases ── */
 .usecases-grid {
   display: grid;
@@ -637,6 +696,7 @@ a:hover { text-decoration: underline; }
   .steps-grid { grid-template-columns: 1fr; gap: 20px; }
   .example-grid { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: repeat(2, 1fr); }
+  .feed-grid { grid-template-columns: repeat(2, 1fr); }
   .usecases-grid { grid-template-columns: 1fr; }
   .section { padding: 64px 0; }
   .section-title { font-size: 28px; margin-bottom: 40px; }
@@ -646,6 +706,7 @@ a:hover { text-decoration: underline; }
   .hero { padding: 64px 20px 48px; }
   .navbar-links a.nav-text { display: none; }
   .results-grid { grid-template-columns: 1fr; }
+  .feed-grid { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
   .container { padding: 0 20px; }
 }
@@ -660,6 +721,7 @@ a:hover { text-decoration: underline; }
     <div class="navbar-links">
       <a href="#how" class="nav-text">How it Works</a>
       <a href="#example" class="nav-text">Examples</a>
+      <a href="#feed" class="nav-text">Latest Experiments</a>
       <a href="#usecases" class="nav-text">Use Cases</a>
       <a href="#cta" class="btn-primary">Upload Dataset</a>
     </div>
@@ -790,21 +852,7 @@ a:hover { text-decoration: underline; }
             <div class="discovery-label">SIR equations discovered from epidemic curves</div>
           </div>
           <div class="chart-container">
-            <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;">
-              <!-- S curve (blue, decreasing) -->
-              <path class="chart-line" d="M10,15 C40,15 70,18 100,22 C140,30 170,45 200,60 C230,75 260,88 300,96 C330,100 360,103 390,105" fill="none" stroke="#4285F4" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- I curve (red, bell) -->
-              <path class="chart-line-2" d="M10,105 C40,100 70,90 100,75 C140,52 170,35 200,28 C230,35 260,52 300,78 C330,92 360,100 390,105" fill="none" stroke="#EA4335" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- R curve (green, increasing) -->
-              <path class="chart-line-3" d="M10,108 C40,108 70,106 100,102 C140,95 170,82 200,68 C230,52 260,38 300,22 C330,14 360,10 390,8" fill="none" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Legend -->
-              <line x1="220" y1="8" x2="240" y2="8" stroke="#4285F4" stroke-width="2.5"/>
-              <text x="244" y="12" fill="#5F6368" font-family="Inter,sans-serif" font-size="10">S</text>
-              <line x1="270" y1="8" x2="290" y2="8" stroke="#EA4335" stroke-width="2.5"/>
-              <text x="294" y="12" fill="#5F6368" font-family="Inter,sans-serif" font-size="10">I</text>
-              <line x1="315" y1="8" x2="335" y2="8" stroke="#34A853" stroke-width="2.5"/>
-              <text x="339" y="12" fill="#5F6368" font-family="Inter,sans-serif" font-size="10">R</text>
-            </svg>
+            <canvas id="sir-canvas" style="display:block;width:100%;height:180px;border:1px solid #DADCE0;border-radius:12px;"></canvas>
           </div>
         </div>
       </div>
@@ -840,18 +888,7 @@ a:hover { text-decoration: underline; }
             <div class="discovery-label">Newton's law of gravity recovered from orbital positions</div>
           </div>
           <div class="chart-container">
-            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;">
-              <!-- Orbit ellipse -->
-              <ellipse class="chart-line" cx="200" cy="90" rx="150" ry="70" fill="none" stroke="#4285F4" stroke-width="2.5"/>
-              <!-- Sun dot -->
-              <circle cx="200" cy="90" r="6" fill="#FBBC04"/>
-              <!-- Planet dot -->
-              <circle cx="350" cy="90" r="4" fill="#4285F4" opacity="0">
-                <animate attributeName="opacity" from="0" to="1" begin="2.5s" dur="0.3s" fill="freeze"/>
-              </circle>
-              <!-- Label -->
-              <text x="200" y="175" text-anchor="middle" fill="#5F6368" font-family="Inter,sans-serif" font-size="10">Orbital trajectory</text>
-            </svg>
+            <canvas id="orbit-canvas" style="display:block;width:100%;height:180px;border:1px solid #DADCE0;border-radius:12px;"></canvas>
           </div>
         </div>
       </div>
@@ -908,6 +945,52 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="anti-result">
       Bitcoin daily prices: no governing equation found. R&sup2; = 0.00. The system knows when there is no law.
+    </div>
+  </div>
+</section>
+
+<!-- ── LATEST EXPERIMENTS ── -->
+<section class="section feed-section" id="feed">
+  <div class="container">
+    <h2 class="section-title">Latest Experiments</h2>
+    <p class="section-subtitle">Real-time results from the ProtoScience engine</p>
+    <div class="feed-grid">
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E053</span><span class="feed-time">2h ago</span>
+        <div class="feed-title">Real Climate Data (NASA)</div>
+        <div class="feed-metric">R&sup2; = 0.90</div>
+        <span class="feed-tag">Climate</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E052</span><span class="feed-time">4h ago</span>
+        <div class="feed-title">Planetary Orbits</div>
+        <div class="feed-metric">R&sup2; = 0.999</div>
+        <span class="feed-tag">Physics</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E051</span><span class="feed-time">5h ago</span>
+        <div class="feed-title">Radioactive Decay</div>
+        <div class="feed-metric">10/10 perfect</div>
+        <span class="feed-tag">Nuclear</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E050</span><span class="feed-time">6h ago</span>
+        <div class="feed-title">Spring / Hooke's Law</div>
+        <div class="feed-metric">12/12 perfect</div>
+        <span class="feed-tag">Mechanics</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E049</span><span class="feed-time">7h ago</span>
+        <div class="feed-title">Ocean Tides</div>
+        <div class="feed-metric">Moon/Sun = 2.22x</div>
+        <span class="feed-tag">Geophysics</span>
+      </div>
+      <div class="feed-card">
+        <span class="feed-status"></span><span class="feed-id">E048</span><span class="feed-time">8h ago</span>
+        <div class="feed-title">EEG Brain Waves</div>
+        <div class="feed-metric">4/4 states</div>
+        <span class="feed-tag">Neuroscience</span>
+      </div>
     </div>
   </div>
 </section>
@@ -981,12 +1064,12 @@ a:hover { text-decoration: underline; }
       panels.forEach(function(p) { p.classList.remove('active'); });
       tab.classList.add('active');
       var panel = document.getElementById('panel-' + target);
-      if (target === 'predator') {
+      window.dispatchEvent(new CustomEvent('lv-tab', { detail: target === 'predator' }));
+      window.dispatchEvent(new CustomEvent('sir-tab', { detail: target === 'epidemic' }));
+      window.dispatchEvent(new CustomEvent('orbit-tab', { detail: target === 'orbits' }));
+      if (target === 'predator' || target === 'epidemic' || target === 'orbits') {
         panel.classList.add('active');
-        window.dispatchEvent(new CustomEvent('lv-tab', { detail: true }));
       } else {
-        window.dispatchEvent(new CustomEvent('lv-tab', { detail: false }));
-        // Force animation replay by cloning inner content
         var clone = panel.innerHTML;
         panel.innerHTML = '';
         requestAnimationFrame(function() {
@@ -1282,6 +1365,129 @@ a:hover { text-decoration: underline; }
     } else {
       running = false; if (rafId) cancelAnimationFrame(rafId);
     }
+  });
+})();
+</script>
+
+<!-- ── SIR animated canvas ── -->
+<script>
+(function() {
+  var canvas = document.getElementById('sir-canvas');
+  var ctx = canvas.getContext('2d');
+  var running = false, rafId = null;
+  var beta = 0.44, gamma = 0.09, dt = 0.15;
+  var S, I, R, tsS, tsI, tsR, trail, MAX_TS = 300, MAX_TRAIL = 200;
+  function reset() { S = 0.95; I = 0.05; R = 0.0; tsS = []; tsI = []; tsR = []; trail = []; }
+  reset();
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    canvas.width = r.width * (window.devicePixelRatio || 1);
+    canvas.height = 180 * (window.devicePixelRatio || 1);
+    ctx.setTransform((window.devicePixelRatio || 1), 0, 0, (window.devicePixelRatio || 1), 0, 0);
+  }
+  resize(); window.addEventListener('resize', resize);
+  function step() {
+    var dS = -beta * S * I * dt, dI = (beta * S * I - gamma * I) * dt, dR = gamma * I * dt;
+    S += dS; I += dI; R += dR;
+    S = Math.max(0, S); I = Math.max(0, I); R = Math.max(0, R);
+    tsS.push(S); tsI.push(I); tsR.push(R); trail.push({ s: S, i: I });
+    if (tsS.length > MAX_TS) { tsS.shift(); tsI.shift(); tsR.shift(); }
+    if (trail.length > MAX_TRAIL) trail.shift();
+    if (I < 0.001 && tsS.length > 50) reset();
+  }
+  function draw() {
+    if (!running) return;
+    for (var s = 0; s < 2; s++) step();
+    var W = canvas.width / (window.devicePixelRatio || 1), Ht = 180, halfW = W / 2, pad = 30;
+    var gw = halfW - pad * 2, gh = Ht - pad * 2;
+    ctx.clearRect(0, 0, W, Ht); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, Ht);
+    var mapY = function(v) { return pad + gh - v * gh; };
+    var mapX = function(i) { return pad + i / (MAX_TS - 1) * gw; };
+    var lines = [[tsS, '#4285F4'], [tsI, '#EA4335'], [tsR, '#34A853']];
+    for (var li = 0; li < 3; li++) {
+      var arr = lines[li][0]; ctx.strokeStyle = lines[li][1]; ctx.lineWidth = 2.5; ctx.beginPath();
+      for (var i = 0; i < arr.length; i++) { i === 0 ? ctx.moveTo(mapX(i), mapY(arr[i])) : ctx.lineTo(mapX(i), mapY(arr[i])); }
+      ctx.stroke();
+    }
+    ctx.font = '11px Inter,sans-serif';
+    var labels = [['S','#4285F4',pad+4],['I','#EA4335',pad+36],['R','#34A853',pad+64]];
+    for (var i = 0; i < 3; i++) { ctx.fillStyle = labels[i][1]; ctx.beginPath(); ctx.arc(labels[i][2], 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText(labels[i][0], labels[i][2] + 8, 15); }
+    ctx.strokeStyle = '#DADCE0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, Ht - 8); ctx.stroke();
+    var ox = halfW + halfW / 2, oy = Ht / 2, sc = Math.min(gw, gh) * 0.8;
+    ctx.fillStyle = '#9E9E9E'; ctx.font = '10px Inter,sans-serif'; ctx.fillText('S \u2192', halfW + pad, Ht - 6);
+    ctx.save(); ctx.translate(halfW + 12, Ht / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('I \u2192', 0, 0); ctx.restore();
+    for (var i = 1; i < trail.length; i++) {
+      ctx.strokeStyle = 'rgba(234,67,53,' + (i / trail.length * 0.8).toFixed(2) + ')'; ctx.lineWidth = 2.5; ctx.beginPath();
+      ctx.moveTo(ox + (trail[i-1].s - 0.5) * sc, oy - trail[i-1].i * sc); ctx.lineTo(ox + (trail[i].s - 0.5) * sc, oy - trail[i].i * sc); ctx.stroke();
+    }
+    if (trail.length > 0) {
+      var last = trail[trail.length - 1]; ctx.shadowColor = '#EA4335'; ctx.shadowBlur = 10;
+      ctx.fillStyle = '#EA4335'; ctx.beginPath(); ctx.arc(ox + (last.s - 0.5) * sc, oy - last.i * sc, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+    }
+    rafId = requestAnimationFrame(draw);
+  }
+  window.addEventListener('sir-tab', function(e) {
+    if (e.detail) { if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); } }
+    else { running = false; if (rafId) cancelAnimationFrame(rafId); }
+  });
+})();
+</script>
+
+<!-- ── Orbit animated canvas ── -->
+<script>
+(function() {
+  var canvas = document.getElementById('orbit-canvas');
+  var ctx = canvas.getContext('2d');
+  var running = false, rafId = null;
+  var omega = 0.5, a = 1.0, e = 0.2, theta = 0;
+  var tsX = [], tsY = [], trail = [], MAX_TS = 300, MAX_TRAIL = 200, lastTime = 0;
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    canvas.width = r.width * (window.devicePixelRatio || 1);
+    canvas.height = 180 * (window.devicePixelRatio || 1);
+    ctx.setTransform((window.devicePixelRatio || 1), 0, 0, (window.devicePixelRatio || 1), 0, 0);
+  }
+  resize(); window.addEventListener('resize', resize);
+  function step() {
+    theta += omega * 0.03;
+    var x = a * (Math.cos(theta) - e), y = a * Math.sqrt(1 - e * e) * Math.sin(theta);
+    tsX.push(x); tsY.push(y); trail.push({ x: x, y: y });
+    if (tsX.length > MAX_TS) { tsX.shift(); tsY.shift(); }
+    if (trail.length > MAX_TRAIL) trail.shift();
+  }
+  function draw(now) {
+    if (!running) return;
+    for (var s = 0; s < 2; s++) step();
+    var W = canvas.width / (window.devicePixelRatio || 1), Ht = 180, halfW = W / 2, pad = 30;
+    var gw = halfW - pad * 2, gh = Ht - pad * 2;
+    ctx.clearRect(0, 0, W, Ht); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, Ht);
+    var mapY = function(v) { return pad + gh / 2 - v / 1.3 * (gh / 2); };
+    var mapX = function(i) { return pad + i / (MAX_TS - 1) * gw; };
+    var lines = [[tsX, '#4285F4'], [tsY, '#EA4335']];
+    for (var li = 0; li < 2; li++) {
+      var arr = lines[li][0]; ctx.strokeStyle = lines[li][1]; ctx.lineWidth = 2.5; ctx.beginPath();
+      for (var i = 0; i < arr.length; i++) { i === 0 ? ctx.moveTo(mapX(i), mapY(arr[i])) : ctx.lineTo(mapX(i), mapY(arr[i])); }
+      ctx.stroke();
+    }
+    ctx.font = '11px Inter,sans-serif';
+    ctx.fillStyle = '#4285F4'; ctx.beginPath(); ctx.arc(pad + 4, 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText('x(t)', pad + 12, 15);
+    ctx.fillStyle = '#EA4335'; ctx.beginPath(); ctx.arc(pad + 56, 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText('y(t)', pad + 64, 15);
+    ctx.strokeStyle = '#DADCE0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, Ht - 8); ctx.stroke();
+    var ox = halfW + halfW / 2, oy = Ht / 2, sc = Math.min(gw, gh) * 0.55;
+    ctx.fillStyle = '#FBBC04'; ctx.beginPath(); ctx.arc(ox, oy, 5, 0, Math.PI * 2); ctx.fill();
+    for (var i = 1; i < trail.length; i++) {
+      ctx.strokeStyle = 'rgba(66,133,244,' + (i / trail.length * 0.8).toFixed(2) + ')'; ctx.lineWidth = 2.5; ctx.beginPath();
+      ctx.moveTo(ox + trail[i-1].x * sc, oy - trail[i-1].y * sc); ctx.lineTo(ox + trail[i].x * sc, oy - trail[i].y * sc); ctx.stroke();
+    }
+    if (trail.length > 0) {
+      var last = trail[trail.length - 1]; ctx.shadowColor = '#4285F4'; ctx.shadowBlur = 10;
+      ctx.fillStyle = '#4285F4'; ctx.beginPath(); ctx.arc(ox + last.x * sc, oy - last.y * sc, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+    }
+    rafId = requestAnimationFrame(draw);
+  }
+  window.addEventListener('orbit-tab', function(e) {
+    if (e.detail) { if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); } }
+    else { running = false; if (rafId) cancelAnimationFrame(rafId); }
   });
 })();
 </script>
