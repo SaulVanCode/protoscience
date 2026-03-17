@@ -378,15 +378,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">17</span>
+      <span class="stat-value">18</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">8</span>
+      <span class="stat-value">9</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">23</span>
+      <span class="stat-value">25</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -404,7 +404,7 @@ body::after {
     <button class="filter-btn" data-filter="engineering">Engineering</button>
     <button class="filter-btn" data-filter="bio">Biology</button>
     <button class="filter-btn" data-filter="econ">Economics</button>
-    <span class="filter-count"><span id="visible-count">17</span> experiments</span>
+    <span class="filter-count"><span id="visible-count">18</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -437,6 +437,19 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E091",
+    title: "Rediscovering Stellar Physics from ESA Gaia DR3",
+    subtitle: "Stefan-Boltzmann (L~R\u00b2T\u2074) and mass-luminosity relation from 15,000 real stars",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "L = k \u00b7 R\u00b2\u00b7\u2070\u2070\u00b3 \u00b7 T\u2074\u00b7\u2070\u2076\u2075",
+    r2: "0.994",
+    r2class: "r2-high",
+    source: "ESA Gaia DR3",
+    status: "passed",
+    href: null
+  },
   {
     id: "BH003",
     title: "Observer Inclination Effects on Shadow Geometry",
