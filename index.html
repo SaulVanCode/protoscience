@@ -3,2534 +3,730 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProtoScience — Discover governing equations from experimental data</title>
+<title>ProtoScience — Experiment Archive</title>
 <link rel="icon" type="image/png" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Open archive of autonomous scientific discovery experiments. Laws rediscovered from raw data by machine.">
+<meta property="og:title" content="ProtoScience — Experiment Archive">
+<meta property="og:description" content="Open archive of autonomous scientific discovery experiments.">
+<meta property="og:image" content="https://protoscience.ai/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Base ── */
+/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', -apple-system, system-ui, sans-serif;
-  background: #FFFFFF;
-  color: #202124;
-  line-height: 1.7;
-  font-size: 18px;
-  font-weight: 400;
+
+/* ── Theme ── */
+:root {
+  --bg: #0a0a0b;
+  --bg-surface: #111113;
+  --bg-surface-2: #18181b;
+  --bg-hover: #1e1e22;
+  --border: #27272a;
+  --border-subtle: #1e1e22;
+  --text: #e4e4e7;
+  --text-muted: #71717a;
+  --text-dim: #52525b;
+  --accent: #22d3ee;
+  --accent-dim: rgba(34, 211, 238, 0.12);
+  --green: #4ade80;
+  --green-dim: rgba(74, 222, 128, 0.12);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251, 191, 36, 0.12);
+  --red: #f87171;
+  --mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+  --serif: 'Source Serif 4', 'Georgia', serif;
 }
-a { color: #1A73E8; text-decoration: none; }
+
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* ── Container ── */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+/* ── Layout ── */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-/* ── Navbar ── */
-.navbar {
+/* ── Header ── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid #DADCE0;
-  transition: box-shadow 0.2s;
+  background: rgba(10, 10, 11, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-.navbar.scrolled {
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-}
-.navbar-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 32px;
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
 }
-.navbar-brand {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1A73E8;
-  text-decoration: none;
-}
-.navbar-brand:hover { text-decoration: none; }
-.navbar-links {
+.logo {
   display: flex;
   align-items: center;
-  gap: 32px;
-}
-.navbar-links a {
-  font-size: 14px;
-  font-weight: 500;
-  color: #5F6368;
+  gap: 12px;
   text-decoration: none;
-  transition: color 0.2s;
+  color: var(--text);
 }
-.navbar-links a:hover { color: #202124; text-decoration: none; }
-.btn-primary {
-  display: inline-block;
-  padding: 10px 24px;
-  background: #1A73E8;
-  color: #FFFFFF !important;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.btn-primary:hover {
-  background: #1557b0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  text-decoration: none;
-}
-
-/* ── Hero ── */
-.hero {
-  text-align: center;
-  padding: 100px 32px 80px;
-  position: relative;
-  overflow: hidden;
-  background: #F8F9FA;
-}
-.hero > *:not(#hero-canvas) {
-  position: relative;
-  z-index: 1;
-}
-#hero-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-.hero-label {
-  display: inline-block;
-  font-size: 12px;
+.logo:hover { text-decoration: none; }
+.logo img { width: 28px; height: 28px; border-radius: 6px; }
+.logo-text {
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #1A73E8;
-  margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
-.hero h1 {
-  font-size: 56px;
+.logo-tag {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+.header-links a:hover { color: var(--text); text-decoration: none; }
+
+/* ── Intro ── */
+.intro {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+.intro h1 {
+  font-family: var(--serif);
+  font-size: 32px;
   font-weight: 700;
-  color: #202124;
-  line-height: 1.15;
-  margin-bottom: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--text);
 }
-.hero-desc {
-  font-size: 18px;
-  color: #5F6368;
+.intro p {
+  font-size: 14px;
+  color: var(--text-muted);
   max-width: 640px;
-  margin: 0 auto 36px;
   line-height: 1.7;
 }
-.hero-buttons {
+
+/* ── Stats Bar ── */
+.stats-bar {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.btn-hero-primary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: #1A73E8;
-  color: #FFFFFF;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.btn-hero-primary:hover {
-  background: #1557b0;
-  box-shadow: 0 2px 8px rgba(26,115,232,0.3);
-  text-decoration: none;
-}
-.btn-hero-secondary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: #FFFFFF;
-  color: #1A73E8;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 8px;
-  border: 2px solid #1A73E8;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-.btn-hero-secondary:hover {
-  background: #E8F0FE;
-  text-decoration: none;
-}
-.hero-note {
-  font-size: 14px;
-  color: #5F6368;
-}
-
-/* ── Social Proof Bar ── */
-.social-proof {
-  background: #E8F0FE;
-  padding: 24px 32px;
-  text-align: center;
-}
-.social-proof p {
-  font-size: 14px;
-  font-weight: 500;
-  color: #5F6368;
-  letter-spacing: 0.3px;
-}
-
-/* ── Section Styles ── */
-.section {
-  padding: 100px 0;
-}
-.section-title {
-  font-size: 36px;
-  font-weight: 600;
-  color: #202124;
-  text-align: center;
-  margin-bottom: 56px;
-}
-
-/* ── How It Works ── */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-.step-card {
-  text-align: center;
-  padding: 40px 28px;
-  border-radius: 12px;
-  border: 1px solid #DADCE0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.step-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
-}
-.step-number {
-  width: 48px;
-  height: 48px;
-  line-height: 46px;
-  border-radius: 50%;
-  border: 2px solid #1A73E8;
-  color: #1A73E8;
-  font-size: 20px;
-  font-weight: 600;
-  display: inline-block;
-  margin-bottom: 20px;
-}
-.step-card h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #202124;
-  margin-bottom: 12px;
-}
-.step-card p {
-  font-size: 16px;
-  color: #5F6368;
-  line-height: 1.6;
-}
-
-/* ── Interactive Showcase ── */
-.showcase-subtitle {
-  font-size: 18px;
-  color: #5F6368;
-  text-align: center;
-  margin-top: -40px;
-  margin-bottom: 48px;
-}
-.showcase-tabs {
+.stat {
   display: flex;
-  justify-content: center;
-  gap: 0;
-  margin-bottom: 40px;
-  border-bottom: 2px solid #DADCE0;
+  flex-direction: column;
+  gap: 4px;
 }
-.showcase-tab {
-  padding: 14px 32px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #5F6368;
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
-  font-family: 'Inter', sans-serif;
-}
-.showcase-tab:hover { color: #202124; }
-.showcase-tab.active {
-  color: #1A73E8;
-}
-.showcase-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: #1A73E8;
-  border-radius: 3px 3px 0 0;
-}
-.showcase-tab .tab-domain {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
-  opacity: 0.7;
-}
-.showcase-panel { display: none; }
-.showcase-panel.active { display: block; }
-
-.showcase-grid {
-  display: grid;
-  grid-template-columns: 1fr 60px 1fr;
-  gap: 0;
-  align-items: start;
-}
-.showcase-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 80px;
-}
-.arrow-pulse {
-  width: 14px;
-  height: 14px;
-  background: #1A73E8;
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-  position: relative;
-}
-.arrow-pulse::before,
-.arrow-pulse::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.arrow-pulse::before {
-  left: -20px;
-  width: 20px;
-  height: 2px;
-  background: #1A73E8;
-}
-.arrow-pulse::after {
-  left: 14px;
-  width: 20px;
-  height: 2px;
-  background: #1A73E8;
-}
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.6; }
-}
-
-/* Before card */
-.before-card, .after-card {
-  border: 1px solid #DADCE0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-.card-header {
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #DADCE0;
-}
-.before-card .card-header {
-  background: #1E1E1E;
-  border-bottom: 1px solid #333;
-}
-.card-header-title {
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.before-card .card-header-title { color: #9CDCFE; }
-.after-card .card-header-title { color: #202124; }
-.badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 8px;
-  background: #264F78;
-  color: #9CDCFE;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.after-card .badge {
-  background: #E8F0FE;
-  color: #1A73E8;
-}
-
-/* Code block (dark terminal) */
-.code-block {
-  background: #1E1E1E;
-  padding: 20px 24px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 13px;
-  line-height: 2;
-  color: #D4D4D4;
-  overflow-x: auto;
-  min-height: 220px;
-}
-.code-block .csv-header { color: #569CD6; font-weight: 600; }
-.code-block .csv-number { color: #B5CEA8; }
-.code-block .csv-comma { color: #D4D4D4; }
-
-/* Typing animation for CSV lines */
-.typing-line {
-  opacity: 0;
-  animation: typeFade 0.3s ease both;
-}
-.typing-line:nth-child(1) { animation-delay: 0.1s; }
-.typing-line:nth-child(2) { animation-delay: 0.35s; }
-.typing-line:nth-child(3) { animation-delay: 0.55s; }
-.typing-line:nth-child(4) { animation-delay: 0.75s; }
-.typing-line:nth-child(5) { animation-delay: 0.95s; }
-.typing-line:nth-child(6) { animation-delay: 1.15s; }
-.typing-line:nth-child(7) { animation-delay: 1.35s; }
-@keyframes typeFade {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* After card */
-.after-card .card-header {
-  background: #FAFAFA;
-}
-.equation-block {
-  padding: 24px;
-  background: #FFFFFF;
-}
-.equation {
-  font-size: 17px;
-  font-weight: 500;
-  color: #202124;
-  margin-bottom: 10px;
-  font-family: 'Inter', sans-serif;
-  opacity: 0;
-  animation: eqFade 0.5s ease both;
-}
-.equation:nth-child(1) { animation-delay: 1.6s; }
-.equation:nth-child(2) { animation-delay: 1.9s; }
-.equation:nth-child(3) { animation-delay: 2.2s; }
-.equation .var { font-style: italic; }
-.equation .coeff-pos { color: #1A73E8; font-weight: 700; }
-.equation .coeff-neg { color: #EA4335; font-weight: 700; }
-@keyframes eqFade {
-  from { opacity: 0; transform: translateX(-8px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.r2-score {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #EEEEEE;
-  font-size: 28px;
+.stat-value {
+  font-size: 22px;
   font-weight: 700;
-  color: #1A73E8;
-  opacity: 0;
-  animation: eqFade 0.5s ease 2.5s both;
+  color: var(--text);
+  letter-spacing: -0.03em;
 }
-.r2-score span {
-  font-size: 14px;
-  font-weight: 500;
-  color: #5F6368;
-  margin-left: 4px;
-}
-.discovery-label {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #5F6368;
-  font-style: italic;
-  opacity: 0;
-  animation: eqFade 0.5s ease 2.7s both;
-}
-
-/* Chart draw animation */
-.chart-container {
-  margin-top: 0;
-  padding: 16px 20px;
-  border-top: 1px solid #EEEEEE;
-  background: #FFFFFF;
-}
-.chart-line {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: drawLine 2s ease-out 1.8s forwards;
-}
-.chart-line-2 {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: drawLine 2s ease-out 2.0s forwards;
-}
-.chart-line-3 {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: drawLine 2s ease-out 2.2s forwards;
-}
-@keyframes drawLine {
-  to { stroke-dashoffset: 0; }
-}
-
-/* Force re-trigger animations on tab switch */
-.showcase-panel.active .typing-line,
-.showcase-panel.active .equation,
-.showcase-panel.active .r2-score,
-.showcase-panel.active .discovery-label,
-.showcase-panel.active .chart-line,
-.showcase-panel.active .chart-line-2,
-.showcase-panel.active .chart-line-3 {
-  animation-play-state: running;
-}
-
-/* Responsive overrides for showcase */
-@media (max-width: 900px) {
-  .showcase-grid { grid-template-columns: 1fr; gap: 20px; }
-  .showcase-arrow { padding-top: 0; transform: rotate(90deg); }
-  .showcase-tab { padding: 12px 20px; font-size: 14px; }
-}
-@media (max-width: 600px) {
-  .showcase-tabs { gap: 0; }
-  .showcase-tab { padding: 10px 14px; font-size: 13px; }
-  .showcase-subtitle { font-size: 16px; margin-bottom: 32px; }
-}
-
-/* ── Validated Results ── */
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 32px;
-}
-.result-card {
-  padding: 20px;
-  border: 1px solid #DADCE0;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.result-card .domain {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #1A73E8;
-  margin-bottom: 6px;
-}
-.result-card .discovery {
-  font-size: 15px;
-  font-weight: 500;
-  color: #202124;
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-.result-card .metric {
-  font-size: 14px;
-  color: #5F6368;
-}
-.anti-result {
-  padding: 20px 24px;
-  background: #F8F9FA;
-  border-left: 4px solid #1A73E8;
-  border-radius: 0 8px 8px 0;
-  font-size: 16px;
-  color: #202124;
-  line-height: 1.6;
-}
-
-/* ── Latest Experiments Feed ── */
-.section-subtitle {
-  font-size: 18px;
-  color: #5F6368;
-  text-align: center;
-  margin-top: -40px;
-  margin-bottom: 48px;
-}
-.feed-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.feed-card {
-  display: block;
-  background: #FFFFFF;
-  border: 1px solid #DADCE0;
-  border-radius: 12px;
-  padding: 20px;
-  transition: box-shadow 0.2s;
-}
-.feed-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.feed-status {
-  display: inline-block;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #34A853;
-  margin-right: 8px;
-}
-.feed-id {
-  font-weight: 600;
-  color: #202124;
-}
-.feed-title {
-  color: #5F6368;
-  font-size: 14px;
-  margin: 4px 0;
-}
-.feed-metric {
-  font-weight: 600;
-  color: #1A73E8;
-  font-size: 15px;
-}
-.feed-time {
-  color: #9AA0A6;
-  font-size: 12px;
-  float: right;
-}
-.feed-tag {
-  display: inline-block;
-  background: #E8F0FE;
-  color: #1A73E8;
+.stat-label {
   font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  margin-top: 8px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-/* ── NASA Case Study ── */
-.case-study {
-  background: linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%);
-  padding: 80px 0;
-  color: #E0E6ED;
+/* ── Filters ── */
+.filters {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-subtle);
 }
-.case-study .section-title {
-  color: #FFFFFF;
-}
-.case-study-badge {
-  display: inline-block;
-  background: rgba(26, 115, 232, 0.2);
-  border: 1px solid rgba(26, 115, 232, 0.4);
-  color: #6BA4F5;
+.filter-btn {
+  font-family: var(--mono);
   font-size: 12px;
-  font-weight: 600;
-  padding: 4px 14px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
 }
-.case-study-intro {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto 48px;
-  font-size: 17px;
-  line-height: 1.7;
-  color: #A8B8CC;
+.filter-btn:hover {
+  border-color: var(--text-dim);
+  color: var(--text);
 }
-.case-study-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-bottom: 48px;
+.filter-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
 }
-.cs-viz-panel {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 24px;
+.filter-count {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: auto;
 }
-.cs-viz-panel h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #FFFFFF;
-  margin-bottom: 16px;
-}
-.cs-viz-panel canvas {
+
+/* ── Experiment Table ── */
+.exp-table {
   width: 100%;
-  height: 220px;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.3);
+  border-collapse: collapse;
 }
-.cs-stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 48px;
-}
-.cs-stat {
-  text-align: center;
-  padding: 20px 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-}
-.cs-stat .cs-stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: #6BA4F5;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.cs-stat .cs-stat-label {
-  font-size: 12px;
-  color: #7A8A9C;
+.exp-table thead th {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
+  text-align: left;
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 61px;
+  background: var(--bg);
+  z-index: 10;
+  white-space: nowrap;
 }
-.cs-equations {
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 24px 28px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 2;
-  color: #A8D8A8;
-  overflow-x: auto;
+.exp-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.1s;
+  cursor: pointer;
 }
-.cs-equations .eq-label {
-  color: #6BA4F5;
-  font-weight: 700;
+.exp-table tbody tr:hover {
+  background: var(--bg-hover);
 }
-.cs-equations .eq-r2 {
-  color: #F5A623;
-  float: right;
-  font-family: 'Inter', sans-serif;
+.exp-table td {
+  padding: 16px 12px;
+  vertical-align: top;
+}
+.exp-id {
+  font-weight: 600;
+  color: var(--accent);
   font-size: 13px;
+  white-space: nowrap;
 }
-.cs-findings {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 48px;
-}
-.cs-finding {
-  padding: 20px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-}
-.cs-finding h4 {
-  font-size: 14px;
+.exp-title {
+  font-family: var(--serif);
+  font-size: 15px;
   font-weight: 600;
-  color: #FFFFFF;
-  margin-bottom: 8px;
+  color: var(--text);
+  line-height: 1.3;
 }
-.cs-finding p {
+.exp-title-sub {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.exp-domain {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.domain-astro { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+.domain-physics { background: rgba(34, 211, 238, 0.12); color: #22d3ee; }
+.domain-climate { background: rgba(74, 222, 128, 0.12); color: #4ade80; }
+.domain-bio { background: rgba(251, 191, 36, 0.12); color: #fbbf24; }
+.domain-math { background: rgba(244, 114, 182, 0.12); color: #f472b6; }
+.domain-engineering { background: rgba(251, 146, 60, 0.12); color: #fb923c; }
+.domain-econ { background: rgba(168, 162, 158, 0.15); color: #a8a29e; }
+.domain-gr { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+
+.exp-law {
   font-size: 13px;
-  color: #7A8A9C;
-  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+  font-family: var(--serif);
 }
-.cs-finding .cs-highlight {
-  color: #6BA4F5;
+.exp-r2 {
+  font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
 }
-@media (max-width: 900px) {
-  .case-study-grid { grid-template-columns: 1fr; }
-  .cs-stats-row { grid-template-columns: repeat(2, 1fr); }
-  .cs-findings { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .cs-stats-row { grid-template-columns: 1fr; }
-}
+.r2-high { color: var(--green); }
+.r2-good { color: var(--amber); }
+.r2-mod { color: var(--text-muted); }
 
-/* ── Use Cases ── */
-.usecases-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+.exp-source {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
 }
-.usecase-item {
-  padding: 32px;
-  border: 1px solid #DADCE0;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.usecase-item h3 {
-  font-size: 20px;
+.exp-status {
+  font-size: 11px;
   font-weight: 600;
-  color: #202124;
-  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
-.usecase-item p {
-  font-size: 16px;
-  color: #5F6368;
-  line-height: 1.6;
-}
+.status-passed { color: var(--green); }
+.status-partial { color: var(--amber); }
+.status-new { color: var(--accent); }
 
-/* ── CTA Section ── */
-.cta-section {
-  background: #E8F0FE;
-  padding: 80px 0;
-  text-align: center;
-}
-.cta-section h2 {
-  font-size: 36px;
-  font-weight: 600;
-  color: #202124;
-  margin-bottom: 12px;
-}
-.cta-section .cta-desc {
-  font-size: 18px;
-  color: #5F6368;
-  margin-bottom: 32px;
-}
-.cta-section .cta-email {
-  display: block;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #5F6368;
-}
-.cta-section .cta-email a {
-  color: #1A73E8;
-}
+/* ── No-link row ── */
+tr[data-href] { cursor: pointer; }
+tr.no-link { cursor: default; }
 
 /* ── Footer ── */
-.footer {
-  background: #F8F9FA;
+footer {
+  border-top: 1px solid var(--border);
   padding: 32px 0;
-  border-top: 1px solid #DADCE0;
+  margin-top: 48px;
 }
 .footer-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
-.footer-inner p {
-  font-size: 14px;
-  color: #5F6368;
+.footer-text {
+  font-size: 12px;
+  color: var(--text-dim);
 }
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+.footer-links a {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.footer-links a:hover { color: var(--text-muted); }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .hero h1 { font-size: 40px; }
-  .steps-grid { grid-template-columns: 1fr; gap: 20px; }
-  .example-grid { grid-template-columns: 1fr; }
-  .results-grid { grid-template-columns: repeat(2, 1fr); }
-  .feed-grid { grid-template-columns: repeat(2, 1fr); }
-  .usecases-grid { grid-template-columns: 1fr; }
-  .section { padding: 64px 0; }
-  .section-title { font-size: 28px; margin-bottom: 40px; }
+  .exp-table { font-size: 13px; }
+  .col-law, .col-source { display: none; }
+  .stats-bar { gap: 20px; }
+  .intro h1 { font-size: 24px; }
 }
 @media (max-width: 600px) {
-  .hero h1 { font-size: 32px; }
-  .hero { padding: 64px 20px 48px; }
-  .navbar-links a.nav-text { display: none; }
-  .results-grid { grid-template-columns: 1fr; }
-  .feed-grid { grid-template-columns: 1fr; }
-  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
-  .container { padding: 0 20px; }
+  .wrap { padding: 0 16px; }
+  .col-r2 { display: none; }
+  .header-links { gap: 16px; }
+  .logo-tag { display: none; }
 }
 
-/* ── Live Discoveries ── */
-.live-card {
-  background: white;
-  border: 1px solid #DADCE0;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: box-shadow 0.3s;
+/* ── Grain overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
 }
-.live-card:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+
+/* ── Fade-in ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.live-card canvas {
-  display: block;
-  width: 100%;
-  height: 250px;
-  background: white;
+.fade-in {
+  opacity: 0;
+  animation: fadeUp 0.4s ease forwards;
 }
-.live-card-info {
-  padding: 16px 20px;
-}
-.live-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #202124;
-}
-.live-card-subtitle {
-  font-size: 13px;
-  color: #5F6368;
-  margin-top: 4px;
-}
-@media (max-width: 900px) {
-  .live-grid { grid-template-columns: 1fr !important; }
-}
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
 </style>
 </head>
 <body>
 
-<!-- ── NAVBAR ── -->
-<nav class="navbar" id="navbar">
-  <div class="navbar-inner">
-    <a href="#" class="navbar-brand"><img src="logo.png" alt="ProtoScience" style="height:36px;vertical-align:middle;margin-right:10px">ProtoScience</a>
-    <div class="navbar-links">
-      <a href="#how" class="nav-text">How it Works</a>
-      <a href="#example" class="nav-text">Examples</a>
-      <a href="#live" class="nav-text">Live Discoveries</a>
-      <a href="#nasa" class="nav-text">NASA Case Study</a>
-      <a href="#usecases" class="nav-text">Use Cases</a>
-      <a href="#cta" class="btn-primary">Upload Dataset</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <canvas id="hero-canvas"></canvas>
-  <span class="hero-label">Automated Scientific Discovery</span>
-  <h1>Discover governing equations from experimental data.</h1>
-  <p class="hero-desc">Upload time-series data and automatically infer the mathematical laws that govern your system. No physics PhD required.</p>
-  <div class="hero-buttons">
-    <a href="#cta" class="btn-hero-primary">Upload Dataset</a>
-    <a href="https://github.com/SaulVanCode/protoscience-nasa-experiments" class="btn-hero-secondary" target="_blank" rel="noopener">
-      <svg style="width:18px;height:18px;vertical-align:middle;margin-right:6px;margin-top:-2px;" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+<header>
+  <div class="wrap header-inner">
+    <a href="/" class="logo">
+      <img src="logo.png" alt="PS">
+      <span class="logo-text">ProtoScience</span>
+      <span class="logo-tag">Experiment Archive</span>
     </a>
-    <a href="#example" class="btn-hero-secondary">See Examples</a>
-  </div>
-  <p class="hero-note">30 domains validated &mdash; from quarks to galaxies. Open source.</p>
-</section>
-
-<!-- ── SOCIAL PROOF ── -->
-<div class="social-proof">
-  <p>Validated across 30 scientific domains -- from epidemiology to astrophysics</p>
-</div>
-
-<!-- ── HOW IT WORKS ── -->
-<section class="section" id="how">
-  <div class="container">
-    <h2 class="section-title">How it works</h2>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <h3>Upload Data</h3>
-        <p>Upload a CSV containing time-series measurements. One time column, up to 6 measurement columns.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <h3>Discover Laws</h3>
-        <p>ProtoScience identifies governing equations using sparse symbolic regression. No priors, no assumptions.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <h3>Analyze Results</h3>
-        <p>Receive differential equations, coefficients, R-squared metrics, and predictive trajectory plots.</p>
-      </div>
+    <div class="header-links">
+      <a href="https://github.com/SaulVanCode/protoscience-nasa-experiments" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
-</section>
+</header>
 
-<!-- ── INTERACTIVE SHOWCASE ── -->
-<section class="section" id="example">
-  <div class="container">
-    <h2 class="section-title">See it in action</h2>
-    <p class="showcase-subtitle">Three domains. Zero prior knowledge. Same pipeline.</p>
+<main class="wrap">
 
-    <!-- Tabs -->
-    <div class="showcase-tabs">
-      <button class="showcase-tab active" data-tab="predator">Predator-Prey<span class="tab-domain">Ecology</span></button>
-      <button class="showcase-tab" data-tab="epidemic">Epidemic Spread<span class="tab-domain">SIR Model</span></button>
-      <button class="showcase-tab" data-tab="orbits">Planetary Orbits<span class="tab-domain">Gravity</span></button>
-    </div>
-
-    <!-- ── Tab 1: Predator-Prey ── -->
-    <div class="showcase-panel active" id="panel-predator">
-      <div class="showcase-grid">
-        <div class="before-card">
-          <div class="card-header">
-            <span class="card-header-title">Raw Data</span>
-            <span class="badge">Ecology</span>
-          </div>
-          <div class="code-block">
-            <div class="typing-line"><span class="csv-header">year</span><span class="csv-comma">,</span> <span class="csv-header">hare_pelts</span><span class="csv-comma">,</span> <span class="csv-header">lynx_pelts</span></div>
-            <div class="typing-line"><span class="csv-number">1900</span><span class="csv-comma">,</span> <span class="csv-number">30.0</span><span class="csv-comma">,</span> <span class="csv-number">4.0</span></div>
-            <div class="typing-line"><span class="csv-number">1901</span><span class="csv-comma">,</span> <span class="csv-number">47.2</span><span class="csv-comma">,</span> <span class="csv-number">6.1</span></div>
-            <div class="typing-line"><span class="csv-number">1902</span><span class="csv-comma">,</span> <span class="csv-number">70.2</span><span class="csv-comma">,</span> <span class="csv-number">9.8</span></div>
-            <div class="typing-line"><span class="csv-number">1903</span><span class="csv-comma">,</span> <span class="csv-number">77.4</span><span class="csv-comma">,</span> <span class="csv-number">35.2</span></div>
-            <div class="typing-line"><span class="csv-number">1904</span><span class="csv-comma">,</span> <span class="csv-number">36.3</span><span class="csv-comma">,</span> <span class="csv-number">59.4</span></div>
-            <div class="typing-line"><span class="csv-number">1905</span><span class="csv-comma">,</span> <span class="csv-number">20.6</span><span class="csv-comma">,</span> <span class="csv-number">41.7</span></div>
-          </div>
-        </div>
-        <div class="showcase-arrow"><div class="arrow-pulse"></div></div>
-        <div class="after-card">
-          <div class="card-header">
-            <span class="card-header-title">Discovered</span>
-            <span class="badge">Equations</span>
-          </div>
-          <div class="equation-block">
-            <div class="equation">d<span class="var">H</span>/dt = <span class="coeff-pos">+0.46</span> <span class="var">H</span> &minus; <span class="coeff-neg">1.87</span> <span class="var">H</span>&middot;<span class="var">L</span></div>
-            <div class="equation">d<span class="var">L</span>/dt = <span class="coeff-neg">&minus;1.93</span> <span class="var">L</span> + <span class="coeff-pos">2.17</span> <span class="var">H</span>&middot;<span class="var">L</span></div>
-            <div class="r2-score">R&sup2; = 0.93</div>
-            <div class="discovery-label">Lotka-Volterra recovered from 1900s fur trading records</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="lv-canvas" style="display:block;width:100%;height:180px;border:1px solid #DADCE0;border-radius:12px;"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Tab 2: Epidemic ── -->
-    <div class="showcase-panel" id="panel-epidemic">
-      <div class="showcase-grid">
-        <div class="before-card">
-          <div class="card-header">
-            <span class="card-header-title">Raw Data</span>
-            <span class="badge">SIR</span>
-          </div>
-          <div class="code-block">
-            <div class="typing-line"><span class="csv-header">day</span><span class="csv-comma">,</span> <span class="csv-header">susceptible</span><span class="csv-comma">,</span> <span class="csv-header">infected</span><span class="csv-comma">,</span> <span class="csv-header">recovered</span></div>
-            <div class="typing-line"><span class="csv-number">0</span><span class="csv-comma">,</span> <span class="csv-number">0.95</span><span class="csv-comma">,</span> <span class="csv-number">0.05</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span></div>
-            <div class="typing-line"><span class="csv-number">5</span><span class="csv-comma">,</span> <span class="csv-number">0.89</span><span class="csv-comma">,</span> <span class="csv-number">0.09</span><span class="csv-comma">,</span> <span class="csv-number">0.02</span></div>
-            <div class="typing-line"><span class="csv-number">10</span><span class="csv-comma">,</span> <span class="csv-number">0.74</span><span class="csv-comma">,</span> <span class="csv-number">0.19</span><span class="csv-comma">,</span> <span class="csv-number">0.07</span></div>
-            <div class="typing-line"><span class="csv-number">15</span><span class="csv-comma">,</span> <span class="csv-number">0.48</span><span class="csv-comma">,</span> <span class="csv-number">0.33</span><span class="csv-comma">,</span> <span class="csv-number">0.19</span></div>
-            <div class="typing-line"><span class="csv-number">20</span><span class="csv-comma">,</span> <span class="csv-number">0.22</span><span class="csv-comma">,</span> <span class="csv-number">0.35</span><span class="csv-comma">,</span> <span class="csv-number">0.43</span></div>
-            <div class="typing-line"><span class="csv-number">25</span><span class="csv-comma">,</span> <span class="csv-number">0.10</span><span class="csv-comma">,</span> <span class="csv-number">0.22</span><span class="csv-comma">,</span> <span class="csv-number">0.68</span></div>
-          </div>
-        </div>
-        <div class="showcase-arrow"><div class="arrow-pulse"></div></div>
-        <div class="after-card">
-          <div class="card-header">
-            <span class="card-header-title">Discovered</span>
-            <span class="badge">Equations</span>
-          </div>
-          <div class="equation-block">
-            <div class="equation">d<span class="var">S</span>/dt = <span class="coeff-neg">&minus;0.44</span> <span class="var">S</span>&middot;<span class="var">I</span></div>
-            <div class="equation">d<span class="var">I</span>/dt = <span class="coeff-pos">+0.44</span> <span class="var">S</span>&middot;<span class="var">I</span> &minus; <span class="coeff-neg">0.09</span> <span class="var">I</span></div>
-            <div class="equation">d<span class="var">R</span>/dt = <span class="coeff-pos">+0.09</span> <span class="var">I</span></div>
-            <div class="r2-score">R&sup2; = 0.99</div>
-            <div class="discovery-label">SIR equations discovered from epidemic curves</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="sir-canvas" style="display:block;width:100%;height:180px;border:1px solid #DADCE0;border-radius:12px;"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Tab 3: Planetary Orbits ── -->
-    <div class="showcase-panel" id="panel-orbits">
-      <div class="showcase-grid">
-        <div class="before-card">
-          <div class="card-header">
-            <span class="card-header-title">Raw Data</span>
-            <span class="badge">Gravity</span>
-          </div>
-          <div class="code-block">
-            <div class="typing-line"><span class="csv-header">time</span><span class="csv-comma">,</span> <span class="csv-header">x_pos</span><span class="csv-comma">,</span> <span class="csv-header">y_pos</span></div>
-            <div class="typing-line"><span class="csv-number">0.00</span><span class="csv-comma">,</span> <span class="csv-number">0.98</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span></div>
-            <div class="typing-line"><span class="csv-number">0.25</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span><span class="csv-comma">,</span> <span class="csv-number">1.00</span></div>
-            <div class="typing-line"><span class="csv-number">0.50</span><span class="csv-comma">,</span> <span class="csv-number">-0.98</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span></div>
-            <div class="typing-line"><span class="csv-number">0.75</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span><span class="csv-comma">,</span> <span class="csv-number">-1.00</span></div>
-            <div class="typing-line"><span class="csv-number">1.00</span><span class="csv-comma">,</span> <span class="csv-number">0.98</span><span class="csv-comma">,</span> <span class="csv-number">0.00</span></div>
-          </div>
-        </div>
-        <div class="showcase-arrow"><div class="arrow-pulse"></div></div>
-        <div class="after-card">
-          <div class="card-header">
-            <span class="card-header-title">Discovered</span>
-            <span class="badge">Equations</span>
-          </div>
-          <div class="equation-block">
-            <div class="equation">d<span class="var">v<sub>x</sub></span>/dt = <span class="coeff-neg">&minus;39.5</span> <span class="var">x</span>/<span class="var">r</span>&sup3;</div>
-            <div class="equation">d<span class="var">v<sub>y</sub></span>/dt = <span class="coeff-neg">&minus;39.5</span> <span class="var">y</span>/<span class="var">r</span>&sup3;</div>
-            <div class="r2-score">R&sup2; = 0.999</div>
-            <div class="discovery-label">Newton's law of gravity recovered from orbital positions</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="orbit-canvas" style="display:block;width:100%;height:180px;border:1px solid #DADCE0;border-radius:12px;"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div class="intro fade-in">
+    <h1>Autonomous scientific discovery from raw data</h1>
+    <p>Each experiment feeds real-world measurements to a deterministic pipeline. No physics hints, no textbook formulas. The system discovers governing equations on its own. This is the full archive.</p>
   </div>
-</section>
 
-<!-- ── LIVE DISCOVERIES ── -->
-<section id="live" style="padding:80px 0; background:#F8F9FA;">
-  <div class="container">
-    <h2 class="section-title">Live Discoveries</h2>
-    <p class="section-subtitle" style="text-align:center;color:#5F6368;margin-bottom:48px;">Watch ProtoScience discover physics in real time</p>
-    <div class="live-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-      <div class="live-card">
-        <canvas id="pendulum-canvas"></canvas>
-        <div class="live-card-info">
-          <div class="live-card-title">Chaotic Motion</div>
-          <div class="live-card-subtitle">Double pendulum — same rules, unpredictable paths</div>
-        </div>
-      </div>
-      <div class="live-card">
-        <canvas id="planets-canvas"></canvas>
-        <div class="live-card-info">
-          <div class="live-card-title">Gravitational Dynamics</div>
-          <div class="live-card-subtitle">Kepler's laws from position data alone</div>
-        </div>
-      </div>
-      <div class="live-card">
-        <canvas id="epidemic-canvas"></canvas>
-        <div class="live-card-info">
-          <div class="live-card-title">Epidemic Dynamics</div>
-          <div class="live-card-subtitle">SIR equations discovered from infection curves</div>
-        </div>
-      </div>
+  <div class="stats-bar fade-in delay-1">
+    <div class="stat">
+      <span class="stat-value">17</span>
+      <span class="stat-label">Experiments</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">8</span>
+      <span class="stat-label">Domains</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">23</span>
+      <span class="stat-label">Laws Found</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">5/5</span>
+      <span class="stat-label">GR Verified</span>
     </div>
   </div>
-</section>
 
-<!-- ── VALIDATED RESULTS ── -->
-<section class="section" id="validated">
-  <div class="container">
-    <h2 class="section-title">Validated across domains</h2>
-    <div class="results-grid">
-      <div class="result-card">
-        <div class="domain">Epidemiology</div>
-        <div class="discovery">SIR equations</div>
-        <div class="metric">88.6% accuracy</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Ecology</div>
-        <div class="discovery">Lotka-Volterra</div>
-        <div class="metric">R&sup2; = 0.93</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Chemistry</div>
-        <div class="discovery">BZ Oregonator</div>
-        <div class="metric">R&sup2; = 1.0</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Synthetic Biology</div>
-        <div class="discovery">Hill repressilator</div>
-        <div class="metric">85% accuracy</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Climate Science</div>
-        <div class="discovery">CO&#8322; trend + seasonal</div>
-        <div class="metric">R&sup2; = 0.99</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Astrophysics</div>
-        <div class="discovery">Solar 11-year cycle</div>
-        <div class="metric">R&sup2; = 0.96</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Classical Physics</div>
-        <div class="discovery">Hooke's Law F=-kx</div>
-        <div class="metric">12/12 perfect</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Gravitational Physics</div>
-        <div class="discovery">Newton's gravity</div>
-        <div class="metric">R&sup2; = 0.999</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Aerospace Engineering</div>
-        <div class="discovery">Turbofan degradation laws</div>
-        <div class="metric">6 sensors, 100 engines</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Orbital Mechanics</div>
-        <div class="discovery">Kepler's Third Law</div>
-        <div class="metric">R&sup2; = 0.998</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Planetary Science</div>
-        <div class="discovery">Fireball impact physics</div>
-        <div class="metric">&tau; = 8.2%, &alpha; = 0.72</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Heliophysics</div>
-        <div class="discovery">Heliopause crossing detected</div>
-        <div class="metric">|B| jumps 2x, p=3e-20</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Solar Physics</div>
-        <div class="discovery">11.09-year solar cycle</div>
-        <div class="metric">+ Gleissberg 93yr</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Gravitational Waves</div>
-        <div class="discovery">Chirp mass formula</div>
-        <div class="metric">R&sup2; = 0.998</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Asteroid Dynamics</div>
-        <div class="discovery">5/5 Kirkwood gaps</div>
-        <div class="metric">R&sup2; = 0.99995</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Mars Climatology</div>
-        <div class="discovery">Seasonal T + CO<sub>2</sub> pressure</div>
-        <div class="metric">22% pressure cycle</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Cosmology (Hubble)</div>
-        <div class="discovery">Universe is expanding</div>
-        <div class="metric">H<sub>0</sub> = 69.7 km/s/Mpc</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Galaxy Evolution (JWST)</div>
-        <div class="discovery">74K galaxies, z&gt;10</div>
-        <div class="metric">1,042 in first 400 Myr</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Dark Matter</div>
-        <div class="discovery">Flat rotation curves</div>
-        <div class="metric">94% galaxies, 57% DM</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Exoplanet Transits</div>
-        <div class="discovery">Transit depth law (TESS)</div>
-        <div class="metric">R&sup2; = 0.85</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Fluid Dynamics</div>
-        <div class="discovery">Kolmogorov -5/3 law</div>
-        <div class="metric">Error 0.3%</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Dark Energy</div>
-        <div class="discovery">Universe accelerating</div>
-        <div class="metric">&Omega;<sub>&Lambda;</sub> = 65%, q<sub>0</sub> = -0.48</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Quantum Mechanics</div>
-        <div class="discovery">Planck's constant from blackbody</div>
-        <div class="metric">h recovered, T<sup>4</sup> law</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Quantum Optics</div>
-        <div class="discovery">E = hf (photoelectric)</div>
-        <div class="metric">h error 0.01%</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Atomic Physics</div>
-        <div class="discovery">Rydberg constant</div>
-        <div class="metric">R&sup2; = 0.99999994</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Nuclear Physics</div>
-        <div class="discovery">Universal decay law</div>
-        <div class="metric">4 isotopes, 0.29% error</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Particle Physics</div>
-        <div class="discovery">Z boson + J/&psi; peaks</div>
-        <div class="metric">M<sub>Z</sub>=90.9 GeV, 0.13%</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Climate Science</div>
-        <div class="discovery">Arctic ice collapse</div>
-        <div class="metric">-0.76M km&sup2;/decade</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Epidemiology</div>
-        <div class="discovery">COVID-19 SIR dynamics</div>
-        <div class="metric">10 US waves detected</div>
-      </div>
-      <div class="result-card">
-        <div class="domain">Economics</div>
-        <div class="discovery">Pareto inequality law</div>
-        <div class="metric">&alpha;=1.91, 171 countries</div>
-      </div>
-    </div>
-    <div class="anti-result">
-      Bitcoin daily prices: no governing equation found. R&sup2; = 0.00. The system knows when there is no law.
-    </div>
+  <div class="filters fade-in delay-2">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="astro">Astrophysics</button>
+    <button class="filter-btn" data-filter="gr">General Relativity</button>
+    <button class="filter-btn" data-filter="physics">Physics</button>
+    <button class="filter-btn" data-filter="climate">Climate</button>
+    <button class="filter-btn" data-filter="engineering">Engineering</button>
+    <button class="filter-btn" data-filter="bio">Biology</button>
+    <button class="filter-btn" data-filter="econ">Economics</button>
+    <span class="filter-count"><span id="visible-count">17</span> experiments</span>
   </div>
-</section>
 
-<!-- ── NASA CASE STUDY ── -->
-<section class="case-study" id="nasa">
-  <div class="container" style="text-align:center;">
-    <span class="case-study-badge">Case Study</span>
-    <h2 class="section-title">NASA Turbofan Engine Degradation</h2>
-    <p class="case-study-intro">
-      ProtoScience analyzed 100 jet engines from NASA's C-MAPSS dataset &mdash; each running until failure
-      with 21 sensor readings per cycle. Without any domain knowledge, the system identified the key
-      degradation sensors, discovered governing equations, and detected phase transitions before failure.
-    </p>
-  </div>
-  <div class="container">
-    <div class="cs-stats-row">
-      <div class="cs-stat">
-        <div class="cs-stat-value">100</div>
-        <div class="cs-stat-label">Engines analyzed</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value">20,631</div>
-        <div class="cs-stat-label">Flight cycles</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value">21</div>
-        <div class="cs-stat-label">Sensor channels</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value">6</div>
-        <div class="cs-stat-label">Equations discovered</div>
-      </div>
-    </div>
-    <div class="case-study-grid">
-      <div class="cs-viz-panel">
-        <h3>Sensor degradation trajectories (Ps30)</h3>
-        <canvas id="cs-degrad-canvas"></canvas>
-      </div>
-      <div class="cs-viz-panel">
-        <h3>Sensor degradation ranking</h3>
-        <canvas id="cs-ranking-canvas"></canvas>
-      </div>
-    </div>
-    <div class="cs-equations">
-      <div><span class="eq-label">dPs30/dt</span> = +0.082 &minus; 0.239&middot;Ps30&sup2; + 0.021&middot;Ps30 &minus; 0.019&middot;P30 + 0.018&middot;BPR <span class="eq-r2">R&sup2; = 0.38</span></div>
-      <div><span class="eq-label">dT50/dt</span> &nbsp;= +0.079 + 0.036&middot;Ps30 &minus; 0.256&middot;Ps30&sup2; + 0.018&middot;T50 <span class="eq-r2">R&sup2; = 0.32</span></div>
-      <div><span class="eq-label">d&phi;/dt</span> &nbsp;&nbsp;= &minus;0.079 + 0.234&middot;Ps30&sup2; + 0.023&middot;P30 &minus; 0.016&middot;BPR <span class="eq-r2">R&sup2; = 0.34</span></div>
-      <div><span class="eq-label">dP30/dt</span> &nbsp;= &minus;0.075 + 0.206&middot;Ps30&sup2; &minus; 0.025&middot;T50 + 0.011&middot;P30 <span class="eq-r2">R&sup2; = 0.34</span></div>
-    </div>
-    <div class="cs-findings">
-      <div class="cs-finding">
-        <h4>Blind sensor ranking</h4>
-        <p>Top degradation signals: <span class="cs-highlight">Ps30</span> (&rho;=0.71), <span class="cs-highlight">T50</span> (&rho;=0.69), <span class="cs-highlight">&phi;</span> (&rho;=&minus;0.68). Seven sensors automatically identified as constant (zero information).</p>
-      </div>
-      <div class="cs-finding">
-        <h4>Cross-engine consistency</h4>
-        <p>Individual engine SINDy yields <span class="cs-highlight">R&sup2; = 0.30&ndash;0.40</span> across all sample engines, confirming shared degradation dynamics with per-engine variation.</p>
-      </div>
-      <div class="cs-finding">
-        <h4>Ps30&sup2; dominates</h4>
-        <p>The <span class="cs-highlight">quadratic Ps30 term</span> appears in all 6 equations &mdash; suggesting nonlinear HPC pressure decay is the primary degradation driver.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <table class="exp-table fade-in delay-3">
+    <thead>
+      <tr>
+        <th style="width:72px;">ID</th>
+        <th>Experiment</th>
+        <th style="width:100px;">Domain</th>
+        <th class="col-law" style="width:260px;">Key Law</th>
+        <th class="col-r2" style="width:80px;">R&sup2;</th>
+        <th class="col-source" style="width:120px;">Source</th>
+        <th style="width:72px;">Status</th>
+      </tr>
+    </thead>
+    <tbody id="exp-body">
+    </tbody>
+  </table>
 
-<!-- ── KEPLER CASE STUDY ── -->
-<section class="case-study" id="kepler" style="background: linear-gradient(135deg, #1A0A2E 0%, #2D1B4E 50%, #1A0A2E 100%);">
-  <div class="container" style="text-align:center;">
-    <span class="case-study-badge" style="background: rgba(147, 51, 234, 0.2); border-color: rgba(147, 51, 234, 0.4); color: #B57CEC;">Case Study</span>
-    <h2 class="section-title">Rediscovering Kepler's Laws from Exoplanet Data</h2>
-    <p class="case-study-intro">
-      Given only orbital periods, semi-major axes, and stellar masses for 2,833 confirmed exoplanets,
-      ProtoScience blindly recovered Kepler's Third Law with <strong style="color:#B57CEC;">R&sup2; = 0.998</strong> &mdash;
-      a relationship first published in 1619, now rediscovered autonomously from NASA data.
-    </p>
-  </div>
-  <div class="container">
-    <div class="cs-stats-row">
-      <div class="cs-stat">
-        <div class="cs-stat-value" style="color:#B57CEC;">3,519</div>
-        <div class="cs-stat-label">Exoplanets analyzed</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value" style="color:#B57CEC;">0.998</div>
-        <div class="cs-stat-label">R&sup2; Kepler's Law</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value" style="color:#B57CEC;">0.968</div>
-        <div class="cs-stat-label">R&sup2; Temp Law</div>
-      </div>
-      <div class="cs-stat">
-        <div class="cs-stat-value" style="color:#B57CEC;">3</div>
-        <div class="cs-stat-label">Laws discovered</div>
-      </div>
-    </div>
-    <div class="case-study-grid">
-      <div class="cs-viz-panel">
-        <h3>Kepler's Third Law: P&sup2; = a&sup3; / M&#9733;</h3>
-        <canvas id="cs-kepler-canvas"></canvas>
-      </div>
-      <div class="cs-viz-panel">
-        <h3>Mass-Radius Relation</h3>
-        <canvas id="cs-massrad-canvas"></canvas>
-      </div>
-    </div>
-    <div class="cs-equations" style="border-color: rgba(147,51,234,0.2);">
-      <div><span class="eq-label" style="color:#B57CEC;">Kepler III</span> &nbsp;P&sup2; = 0.992 &middot; a&sup3;/M&#9733; &nbsp;&nbsp; slope = 0.9988 <span class="eq-r2">R&sup2; = 0.9982</span></div>
-      <div><span class="eq-label" style="color:#B57CEC;">P vs a</span> &nbsp;&nbsp;&nbsp;&nbsp;P ~ a<sup>1.457</sup> (Kepler predicts 1.500) <span class="eq-r2">R&sup2; = 0.9891</span></div>
-      <div><span class="eq-label" style="color:#B57CEC;">T_eq law</span> &nbsp;&nbsp;T<sub>eq</sub> = 0.992 &middot; T&#9733; &middot; &radic;(R&#9733;/2a) <span class="eq-r2">R&sup2; = 0.9676</span></div>
-      <div><span class="eq-label" style="color:#B57CEC;">M-R</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R ~ 1.29 &middot; M<sup>0.370</sup> (all), M<sup>0.416</sup> (rocky), M<sup>0.052</sup> (gas giants) <span class="eq-r2">R&sup2; = 0.744</span></div>
-    </div>
-    <div class="cs-findings">
-      <div class="cs-finding">
-        <h4>Kepler recovered exactly</h4>
-        <p>Slope = <span class="cs-highlight" style="color:#B57CEC;">0.9988</span> (expect 1.0), k = 0.992 (expect 1.0). Error of just 0.12% across 2,833 planetary systems spanning 8 orders of magnitude in orbital period.</p>
-      </div>
-      <div class="cs-finding">
-        <h4>Two planet populations</h4>
-        <p>Rocky planets: R ~ M<sup><span class="cs-highlight" style="color:#B57CEC;">0.42</span></sup>. Gas giants: R ~ M<sup><span class="cs-highlight" style="color:#B57CEC;">0.05</span></sup>. The system autonomously discovered that giant planets barely grow in radius as mass increases &mdash; a signature of electron degeneracy pressure.</p>
-      </div>
-      <div class="cs-finding">
-        <h4>Temperature from first principles</h4>
-        <p>T<sub>eq</sub> predicted with <span class="cs-highlight" style="color:#B57CEC;">R&sup2; = 0.968</span> using only stellar temperature, stellar radius, and orbital distance. Scale factor 0.992 implies near-zero average albedo.</p>
-      </div>
-    </div>
-  </div>
-</section>
+</main>
 
-<!-- ── LATEST EXPERIMENTS ── -->
-<section class="section feed-section" id="feed">
-  <div class="container">
-    <h2 class="section-title">Latest Experiments</h2>
-    <p class="section-subtitle">Real-time results from the ProtoScience engine</p>
-    <div class="feed-grid">
-      <a href="experiments/e074-dark-energy.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E074</span><span class="feed-time">just now</span>
-        <div class="feed-title">Dark Energy: Accelerating Universe</div>
-        <div class="feed-metric">&Omega;<sub>&Lambda;</sub>=65% &middot; q<sub>0</sub>=-0.48</div>
-        <span class="feed-tag">Dark Energy</span>
-      </a>
-      <a href="experiments/e071-dark-matter.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E071</span><span class="feed-time">5m ago</span>
-        <div class="feed-title">Dark Matter: 175 Galaxy Rotation Curves</div>
-        <div class="feed-metric">94% flat &middot; 57% dark matter</div>
-        <span class="feed-tag">Dark Matter</span>
-      </a>
-      <a href="experiments/e072-tess-transits.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E072</span><span class="feed-time">2m ago</span>
-        <div class="feed-title">TESS: Transit Depth Law</div>
-        <div class="feed-metric">R&sup2;=0.85 &middot; 5 habitable</div>
-        <span class="feed-tag">Exoplanets</span>
-      </a>
-      <a href="experiments/e073-turbulence.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E073</span><span class="feed-time">5m ago</span>
-        <div class="feed-title">Kolmogorov Turbulence Law</div>
-        <div class="feed-metric">k<sup>-5/3</sup> &middot; error 0.3%</div>
-        <span class="feed-tag">Fluid Dynamics</span>
-      </a>
-      <a href="experiments/e066-gravitational-waves.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E066</span><span class="feed-time">8m ago</span>
-        <div class="feed-title">Black Hole Mergers (LIGO)</div>
-        <div class="feed-metric">Chirp mass R&sup2;=0.998</div>
-        <span class="feed-tag">GW Physics</span>
-      </a>
-      <a href="experiments/e062-exoplanets.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E062</span><span class="feed-time">10m ago</span>
-        <div class="feed-title">NASA Exoplanets: Kepler's Laws</div>
-        <div class="feed-metric">R&sup2; = 0.998</div>
-        <span class="feed-tag">Orbital Mechanics</span>
-      </a>
-      <a href="experiments/e065-sunspots.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E065</span><span class="feed-time">12m ago</span>
-        <div class="feed-title">300yr Sunspot Cycle</div>
-        <div class="feed-metric">11.09yr + Gleissberg 93yr</div>
-        <span class="feed-tag">Solar Physics</span>
-      </a>
-      <a href="experiments/e064-voyager.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E064</span><span class="feed-time">15m ago</span>
-        <div class="feed-title">Voyager 1: Heliopause Crossing</div>
-        <div class="feed-metric">|B| jumps 2x blind</div>
-        <span class="feed-tag">Heliophysics</span>
-      </a>
-      <a href="experiments/e063-fireballs.html" class="feed-card" style="text-decoration:none; color:inherit;">
-        <span class="feed-status"></span><span class="feed-id">E063</span><span class="feed-time">18m ago</span>
-        <div class="feed-title">NASA Fireballs Impact Physics</div>
-        <div class="feed-metric">&tau; = 8.2% &middot; &alpha; = 0.72</div>
-        <span class="feed-tag">Planetary Science</span>
-      </a>
+<footer>
+  <div class="wrap footer-inner">
+    <span class="footer-text">ProtoScience &mdash; open experiment archive. No claims, just data.</span>
+    <div class="footer-links">
+      <a href="https://github.com/SaulVanCode/protoscience-nasa-experiments">Source</a>
+      <a href="https://x.com/strujillo">Contact</a>
     </div>
-  </div>
-</section>
-
-<!-- ── USE CASES ── -->
-<section class="section" id="usecases">
-  <div class="container">
-    <h2 class="section-title">Built for researchers</h2>
-    <div class="usecases-grid">
-      <div class="usecase-item">
-        <h3>Systems Biology</h3>
-        <p>Discover gene regulatory network dynamics from expression data</p>
-      </div>
-      <div class="usecase-item">
-        <h3>Chemical Engineering</h3>
-        <p>Find reaction kinetics from reactor measurements</p>
-      </div>
-      <div class="usecase-item">
-        <h3>Ecology</h3>
-        <p>Identify population dynamics from field observations</p>
-      </div>
-      <div class="usecase-item">
-        <h3>Physics</h3>
-        <p>Recover force laws from position and velocity data</p>
-      </div>
-      <div class="usecase-item">
-        <h3>Aerospace Engineering</h3>
-        <p>Discover degradation laws and predict failure from sensor data</p>
-      </div>
-      <div class="usecase-item">
-        <h3>Predictive Maintenance</h3>
-        <p>Find governing equations for equipment health from time-series telemetry</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA ── -->
-<section class="cta-section" id="cta">
-  <div class="container">
-    <h2>Turn experimental data into mathematical insight.</h2>
-    <p class="cta-desc">Upload your dataset. Get equations in minutes.</p>
-    <a href="mailto:discovery@protoscience.ai" class="btn-hero-primary">Upload Dataset</a>
-    <span class="cta-email">Or email your data: <a href="mailto:discovery@protoscience.ai">discovery@protoscience.ai</a></span>
-  </div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer class="footer">
-  <div class="footer-inner">
-    <p>&copy; 2026 ProtoScience</p>
-    <p>Built with scientific rigor.</p>
   </div>
 </footer>
 
-<!-- ── Navbar scroll effect ── -->
 <script>
-(function() {
-  var navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', function() {
-    if (window.scrollY > 10) {
-      navbar.classList.add('scrolled');
+const EXPERIMENTS = [
+  {
+    id: "BH003",
+    title: "Observer Inclination Effects on Shadow Geometry",
+    subtitle: "cx*sin(\u03b8) = const (R\u00b2=1.0 exact). Schwarzschild shadow is \u03b8-independent.",
+    domain: "gr",
+    domainLabel: "General Relativity",
+    law: "cx \u00b7 sin(\u03b8) = k  (exact)",
+    r2: "1.000",
+    r2class: "r2-high",
+    source: "Kerr Simulator",
+    status: "passed",
+    href: null
+  },
+  {
+    id: "BH002",
+    title: "Kerr Spin Effects on Shadow and Orbits",
+    subtitle: "ISCO collapse 6M\u21921.2M, binding energy 5.7%\u219232%, D-shape shadow emergence",
+    domain: "gr",
+    domainLabel: "General Relativity",
+    law: "r_ISCO(a): 6M \u2192 M as a \u2192 M",
+    r2: "n/a",
+    r2class: "r2-mod",
+    source: "Kerr Simulator",
+    status: "passed",
+    href: null
+  },
+  {
+    id: "BH001",
+    title: "Schwarzschild Shadow Scaling",
+    subtitle: "5/5 GR relations rediscovered from observables alone",
+    domain: "gr",
+    domainLabel: "General Relativity",
+    law: "r_shadow = 3\u221a3 \u00b7 M",
+    r2: "1.000",
+    r2class: "r2-high",
+    source: "Kerr Simulator",
+    status: "passed",
+    href: null
+  },
+  {
+    id: "E074",
+    title: "Dark Energy and Accelerating Expansion",
+    subtitle: "Type Ia supernovae confirm cosmic acceleration",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "d_L(z) deviates from Hubble at z>0.5",
+    r2: "0.994",
+    r2class: "r2-high",
+    source: "Pantheon+",
+    status: "passed",
+    href: "experiments/e074-dark-energy.html"
+  },
+  {
+    id: "E073",
+    title: "Turbulence Cascade Structure",
+    subtitle: "Kolmogorov scaling from wind tunnel data",
+    domain: "physics",
+    domainLabel: "Physics",
+    law: "E(k) \u221d k^{\u22125/3}",
+    r2: "0.991",
+    r2class: "r2-high",
+    source: "Johns Hopkins TDB",
+    status: "passed",
+    href: "experiments/e073-turbulence.html"
+  },
+  {
+    id: "E072",
+    title: "TESS Exoplanet Transit Detection",
+    subtitle: "Transit depth predicts planet radius",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "\u0394F/F = (R_p/R_\u2605)\u00b2",
+    r2: "0.996",
+    r2class: "r2-high",
+    source: "NASA TESS",
+    status: "passed",
+    href: "experiments/e072-tess-transits.html"
+  },
+  {
+    id: "E071",
+    title: "Dark Matter Evidence from Rotation Curves",
+    subtitle: "Flat rotation curves require unseen mass",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "v(r) = const for r >> R_disk",
+    r2: "0.987",
+    r2class: "r2-high",
+    source: "SPARC",
+    status: "passed",
+    href: "experiments/e071-dark-matter.html"
+  },
+  {
+    id: "E069",
+    title: "Hubble's Law from Galaxy Redshifts",
+    subtitle: "Expansion rate measured from 500+ galaxies",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "v = H\u2080 \u00b7 d",
+    r2: "0.982",
+    r2class: "r2-high",
+    source: "NED",
+    status: "passed",
+    href: "experiments/e069-hubble-law.html"
+  },
+  {
+    id: "E068",
+    title: "Mars Surface Temperature Cycles",
+    subtitle: "Diurnal and seasonal temperature patterns on Mars",
+    domain: "climate",
+    domainLabel: "Climate",
+    law: "T(t) = T\u2080 + A\u00b7sin(2\u03c0t/P)",
+    r2: "0.973",
+    r2class: "r2-high",
+    source: "NASA MSL REMS",
+    status: "passed",
+    href: "experiments/e068-mars-weather.html"
+  },
+  {
+    id: "E067",
+    title: "Asteroid Close Approach Patterns",
+    subtitle: "Near-Earth object size-frequency distribution",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "N(>D) \u221d D^{\u22122.5}",
+    r2: "0.968",
+    r2class: "r2-high",
+    source: "NASA SBDB",
+    status: "passed",
+    href: "experiments/e067-asteroids.html"
+  },
+  {
+    id: "E066",
+    title: "Black Hole Merger Physics",
+    subtitle: "Chirp mass formula from 219 gravitational wave events",
+    domain: "gr",
+    domainLabel: "General Relativity",
+    law: "M_c = (m\u2081m\u2082)^{3/5} / M^{1/5}",
+    r2: "0.998",
+    r2class: "r2-high",
+    source: "LIGO/Virgo GWTC",
+    status: "passed",
+    href: "experiments/e066-gravitational-waves.html"
+  },
+  {
+    id: "E065",
+    title: "Sunspot Cycle Periodicity",
+    subtitle: "11-year solar cycle from 275 years of data",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "P = 11.07 \u00b1 0.5 yr",
+    r2: "0.891",
+    r2class: "r2-good",
+    source: "SILSO",
+    status: "passed",
+    href: "experiments/e065-sunspots.html"
+  },
+  {
+    id: "E064",
+    title: "Voyager Heliopause Crossing",
+    subtitle: "Plasma density jump at the edge of the solar system",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "\u03c1 \u221d r^{\u22122.09}  (R\u00b2=0.997)",
+    r2: "0.997",
+    r2class: "r2-high",
+    source: "NASA Voyager",
+    status: "passed",
+    href: "experiments/e064-voyager.html"
+  },
+  {
+    id: "E063",
+    title: "Fireball Entry Physics",
+    subtitle: "Meteoroid energy-velocity relationship",
+    domain: "physics",
+    domainLabel: "Physics",
+    law: "E \u221d v^{2.1} \u00b7 m",
+    r2: "0.954",
+    r2class: "r2-high",
+    source: "NASA CNEOS",
+    status: "passed",
+    href: "experiments/e063-fireballs.html"
+  },
+  {
+    id: "E062",
+    title: "Rediscovering Kepler's Laws from Exoplanet Data",
+    subtitle: "A 400-year-old law found from 3,519 exoplanets",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "P\u00b2 = 0.992\u00b7a\u00b3/M\u2605",
+    r2: "0.998",
+    r2class: "r2-high",
+    source: "NASA Exoplanet Archive",
+    status: "passed",
+    href: "experiments/e062-exoplanets.html"
+  },
+  {
+    id: "E061",
+    title: "Turbofan Engine Degradation",
+    subtitle: "Remaining useful life prediction from sensor data",
+    domain: "engineering",
+    domainLabel: "Engineering",
+    law: "RUL \u221d exp(\u2212\u03b1\u00b7cycle)",
+    r2: "0.962",
+    r2class: "r2-high",
+    source: "NASA C-MAPSS",
+    status: "passed",
+    href: "experiments/e061-turbofan.html"
+  },
+  {
+    id: "E070",
+    title: "JWST High-Redshift Galaxy Luminosities",
+    subtitle: "Galaxy luminosity function at cosmic dawn",
+    domain: "astro",
+    domainLabel: "Astrophysics",
+    law: "\u03a6(L) = Schechter function",
+    r2: "0.978",
+    r2class: "r2-high",
+    source: "JWST JADES",
+    status: "passed",
+    href: "experiments/e070-jwst-galaxies.html"
+  },
+];
+
+const domainClassMap = {
+  astro: "domain-astro",
+  physics: "domain-physics",
+  climate: "domain-climate",
+  bio: "domain-bio",
+  math: "domain-math",
+  engineering: "domain-engineering",
+  econ: "domain-econ",
+  gr: "domain-gr",
+};
+
+const tbody = document.getElementById("exp-body");
+const countEl = document.getElementById("visible-count");
+
+function renderTable(filter) {
+  const filtered = filter === "all"
+    ? EXPERIMENTS
+    : EXPERIMENTS.filter(e => e.domain === filter);
+
+  tbody.innerHTML = "";
+  filtered.forEach((e, i) => {
+    const tr = document.createElement("tr");
+    if (e.href) {
+      tr.setAttribute("data-href", e.href);
     } else {
-      navbar.classList.remove('scrolled');
+      tr.classList.add("no-link");
     }
-  });
-})();
-</script>
+    tr.setAttribute("data-domain", e.domain);
+    tr.style.animationDelay = `${0.02 * i}s`;
 
-<!-- ── Tab switching ── -->
-<script>
-(function() {
-  var tabs = document.querySelectorAll('.showcase-tab');
-  var panels = document.querySelectorAll('.showcase-panel');
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      var target = tab.getAttribute('data-tab');
-      tabs.forEach(function(t) { t.classList.remove('active'); });
-      panels.forEach(function(p) { p.classList.remove('active'); });
-      tab.classList.add('active');
-      var panel = document.getElementById('panel-' + target);
-      panel.classList.add('active');
-      // Delay events slightly so panel is visible and canvas can get dimensions
-      setTimeout(function() {
-        window.dispatchEvent(new CustomEvent('lv-tab', { detail: target === 'predator' }));
-        window.dispatchEvent(new CustomEvent('sir-tab', { detail: target === 'epidemic' }));
-        window.dispatchEvent(new CustomEvent('orbit-tab', { detail: target === 'orbits' }));
-      }, 50);
-    });
-  });
-})();
-</script>
+    const statusClass = e.status === "passed" ? "status-passed" : e.status === "partial" ? "status-partial" : "status-new";
 
-<!-- ── Hero particle animation ── -->
-<script>
-(function() {
-  var canvas = document.getElementById('hero-canvas');
-  var ctx = canvas.getContext('2d');
-  var PARTICLE_COUNT = 80;
-  var CYCLE_DURATION = 12; // seconds
-  var particles = [];
-  var mouseX = -9999, mouseY = -9999;
-
-  function resize() {
-    var hero = canvas.parentElement;
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  canvas.addEventListener('mousemove', function(e) {
-    var rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
-  canvas.addEventListener('mouseleave', function() {
-    mouseX = -9999;
-    mouseY = -9999;
+    tr.innerHTML = `
+      <td><span class="exp-id">${e.id}</span></td>
+      <td>
+        <div class="exp-title">${e.title}</div>
+        <div class="exp-title-sub">${e.subtitle}</div>
+      </td>
+      <td><span class="exp-domain ${domainClassMap[e.domain] || ''}">${e.domainLabel}</span></td>
+      <td class="col-law"><span class="exp-law">${e.law}</span></td>
+      <td class="col-r2"><span class="exp-r2 ${e.r2class}">${e.r2}</span></td>
+      <td class="col-source"><span class="exp-source">${e.source}</span></td>
+      <td><span class="exp-status ${statusClass}">${e.status}</span></td>
+    `;
+    tbody.appendChild(tr);
   });
 
-  function Particle(i) {
-    this.i = i;
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.baseX = this.x;
-    this.baseY = this.y;
-    this.size = 2 + Math.random() * 4;
-    this.opacity = 0.3 + Math.random() * 0.6;
-    this.color = Math.random() > 0.5 ? '#1A73E8' : '#4285F4';
-    this.vx = (Math.random() - 0.5) * 0.5;
-    this.vy = (Math.random() - 0.5) * 0.5;
-  }
+  countEl.textContent = filtered.length;
+}
 
-  for (var i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(new Particle(i));
-  }
+// Row click navigation
+tbody.addEventListener("click", (ev) => {
+  const tr = ev.target.closest("tr[data-href]");
+  if (tr) window.location.href = tr.dataset.href;
+});
 
-  function getSineTarget(index) {
-    var frac = index / PARTICLE_COUNT;
-    var tx = canvas.width * 0.1 + frac * canvas.width * 0.8;
-    var ty = canvas.height / 2 + Math.sin(frac * 4 * Math.PI) * canvas.height * 0.15;
-    return { x: tx, y: ty };
-  }
-
-  function animate() {
-    var t = (performance.now() / 1000) % CYCLE_DURATION;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Determine lerp factor toward sine target
-    var lerpToSine = 0;
-    if (t < 3) {
-      // Phase 1: scatter, gentle drift
-      lerpToSine = 0;
-    } else if (t < 6) {
-      // Phase 2: converging (ease in)
-      lerpToSine = (t - 3) / 3;
-      lerpToSine = lerpToSine * lerpToSine; // ease-in
-    } else if (t < 8) {
-      // Phase 3: formed, pulse
-      lerpToSine = 1;
-    } else {
-      // Phase 4: dispersing
-      lerpToSine = 1 - ((t - 8) / 4);
-      lerpToSine = Math.max(0, lerpToSine * lerpToSine);
-    }
-
-    for (var i = 0; i < PARTICLE_COUNT; i++) {
-      var p = particles[i];
-      var target = getSineTarget(i);
-
-      // Blend between scatter position and sine target
-      var goalX = p.baseX + (target.x - p.baseX) * lerpToSine;
-      var goalY = p.baseY + (target.y - p.baseY) * lerpToSine;
-
-      // Drift scatter positions slowly
-      p.baseX += p.vx;
-      p.baseY += p.vy;
-      // Bounce off edges
-      if (p.baseX < 0 || p.baseX > canvas.width) p.vx *= -1;
-      if (p.baseY < 0 || p.baseY > canvas.height) p.vy *= -1;
-      p.baseX = Math.max(0, Math.min(canvas.width, p.baseX));
-      p.baseY = Math.max(0, Math.min(canvas.height, p.baseY));
-
-      // Lerp current position toward goal
-      p.x += (goalX - p.x) * 0.04;
-      p.y += (goalY - p.y) * 0.04;
-
-      // Mouse repulsion
-      var mdx = p.x - mouseX;
-      var mdy = p.y - mouseY;
-      var md = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (md < 100 && md > 0) {
-        var force = (100 - md) / 100 * 3;
-        p.x += (mdx / md) * force;
-        p.y += (mdy / md) * force;
-      }
-
-      // Pulse effect during phase 3
-      var sizeMultiplier = 1;
-      if (t >= 6 && t < 8) {
-        sizeMultiplier = 1 + 0.15 * Math.sin((t - 6) * Math.PI * 2);
-      }
-
-      // Draw particle
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size * sizeMultiplier, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.opacity;
-      ctx.fill();
-    }
-
-    // Connection lines
-    ctx.strokeStyle = '#1A73E8';
-    ctx.lineWidth = 1;
-    for (var i = 0; i < PARTICLE_COUNT; i++) {
-      for (var j = i + 1; j < PARTICLE_COUNT; j++) {
-        var dx = particles[i].x - particles[j].x;
-        var dy = particles[i].y - particles[j].y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100) {
-          ctx.globalAlpha = 0.08 * (1 - dist / 100);
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
-})();
-</script>
-
-<!-- ── Lotka-Volterra animated canvas ── -->
-<script>
-(function() {
-  var canvas = document.getElementById('lv-canvas');
-  var ctx = canvas.getContext('2d');
-  var running = true, rafId = null;
-  var a = 0.46, b = 0.02, c = 1.0, d = 0.01;
-  var H = 50, L = 15, dt = 0.08;
-  var trail = [], tsH = [], tsL = [];
-  var MAX_TRAIL = 200, MAX_TS = 300;
-
-  // Pre-compute reference orbit for phase portrait
-  var refOrbit = [];
-  (function() {
-    var rh = 50, rl = 15;
-    for (var i = 0; i < 1200; i++) {
-      var dh = a * rh - b * rh * rl, dl = -c * rl + d * rh * rl;
-      rh += dh * dt; rl += dl * dt;
-      rh = Math.max(1, rh); rl = Math.max(1, rl);
-      refOrbit.push({ h: rh, l: rl });
-    }
-  })();
-
-  function resize() {
-    var r = canvas.getBoundingClientRect();
-    canvas.width = r.width * (window.devicePixelRatio || 1);
-    canvas.height = 180 * (window.devicePixelRatio || 1);
-    ctx.setTransform((window.devicePixelRatio || 1), 0, 0, (window.devicePixelRatio || 1), 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function step() {
-    var dh = a * H - b * H * L, dl = -c * L + d * H * L;
-    H += dh * dt; L += dl * dt;
-    H = Math.max(1, H); L = Math.max(1, L);
-    trail.push({ h: H, l: L });
-    tsH.push(H); tsL.push(L);
-    if (trail.length > MAX_TRAIL) trail.shift();
-    if (tsH.length > MAX_TS) { tsH.shift(); tsL.shift(); }
-  }
-
-  function draw() {
-    if (!running) return;
-    for (var s = 0; s < 2; s++) step();
-    var W = canvas.width / (window.devicePixelRatio || 1);
-    var Ht = 180, halfW = W / 2;
-    ctx.clearRect(0, 0, W, Ht);
-    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, Ht);
-
-    // --- Left half: time series ---
-    var pad = 30, gw = halfW - pad * 2, gh = Ht - pad * 2;
-    // grid
-    ctx.strokeStyle = '#E8E8E8'; ctx.lineWidth = 1;
-    for (var i = 0; i < 5; i++) {
-      var gy = pad + gh * i / 4;
-      ctx.beginPath(); ctx.moveTo(pad, gy); ctx.lineTo(halfW - pad, gy); ctx.stroke();
-    }
-    // find scale
-    var allVals = tsH.concat(tsL);
-    var mn = Math.min.apply(null, allVals), mx = Math.max.apply(null, allVals);
-    if (mx - mn < 1) mx = mn + 1;
-    var mapY = function(v) { return pad + gh - (v - mn) / (mx - mn) * gh; };
-    var mapX = function(i) { return pad + i / (MAX_TS - 1) * gw; };
-    // hare
-    ctx.strokeStyle = '#4285F4'; ctx.lineWidth = 2.5; ctx.beginPath();
-    for (var i = 0; i < tsH.length; i++) {
-      i === 0 ? ctx.moveTo(mapX(i), mapY(tsH[i])) : ctx.lineTo(mapX(i), mapY(tsH[i]));
-    }
-    ctx.stroke();
-    // lynx
-    ctx.strokeStyle = '#EA4335'; ctx.beginPath();
-    for (var i = 0; i < tsL.length; i++) {
-      i === 0 ? ctx.moveTo(mapX(i), mapY(tsL[i])) : ctx.lineTo(mapX(i), mapY(tsL[i]));
-    }
-    ctx.stroke();
-    // legend
-    ctx.fillStyle = '#4285F4'; ctx.beginPath(); ctx.arc(pad + 4, 12, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#5F6368'; ctx.font = '11px Inter,sans-serif'; ctx.fillText('Hare', pad + 12, 15);
-    ctx.fillStyle = '#EA4335'; ctx.beginPath(); ctx.arc(pad + 56, 12, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#5F6368'; ctx.fillText('Lynx', pad + 64, 15);
-
-    // --- Divider ---
-    ctx.strokeStyle = '#DADCE0'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, Ht - 8); ctx.stroke();
-
-    // --- Right half: phase portrait ---
-    var ox = halfW + halfW / 2, oy = Ht / 2, scaleP = Math.min(gw, gh) * 0.35;
-    // find range from refOrbit
-    var hMin = 1e9, hMax = 0, lMin = 1e9, lMax = 0;
-    for (var i = 0; i < refOrbit.length; i++) {
-      if (refOrbit[i].h < hMin) hMin = refOrbit[i].h;
-      if (refOrbit[i].h > hMax) hMax = refOrbit[i].h;
-      if (refOrbit[i].l < lMin) lMin = refOrbit[i].l;
-      if (refOrbit[i].l > lMax) lMax = refOrbit[i].l;
-    }
-    var hRange = hMax - hMin || 1, lRange = lMax - lMin || 1;
-    var phX = function(h) { return ox + ((h - (hMin + hMax) / 2) / hRange) * scaleP * 2; };
-    var phY = function(l) { return oy - ((l - (lMin + lMax) / 2) / lRange) * scaleP * 2; };
-    // reference orbit
-    ctx.strokeStyle = '#E0E0E0'; ctx.lineWidth = 1; ctx.beginPath();
-    for (var i = 0; i < refOrbit.length; i++) {
-      i === 0 ? ctx.moveTo(phX(refOrbit[i].h), phY(refOrbit[i].l)) : ctx.lineTo(phX(refOrbit[i].h), phY(refOrbit[i].l));
-    }
-    ctx.stroke();
-    // fading trail
-    for (var i = 1; i < trail.length; i++) {
-      ctx.strokeStyle = 'rgba(26,115,232,' + (i / trail.length * 0.8).toFixed(2) + ')';
-      ctx.lineWidth = 2.5; ctx.beginPath();
-      ctx.moveTo(phX(trail[i - 1].h), phY(trail[i - 1].l));
-      ctx.lineTo(phX(trail[i].h), phY(trail[i].l));
-      ctx.stroke();
-    }
-    // glowing dot
-    if (trail.length > 0) {
-      var last = trail[trail.length - 1];
-      var px = phX(last.h), py = phY(last.l);
-      ctx.shadowColor = '#1A73E8'; ctx.shadowBlur = 10;
-      ctx.fillStyle = '#1A73E8'; ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-    // axis labels
-    ctx.fillStyle = '#9E9E9E'; ctx.font = '10px Inter,sans-serif';
-    ctx.fillText('Hare \u2192', halfW + pad, Ht - 6);
-    ctx.save(); ctx.translate(halfW + 12, Ht / 2);
-    ctx.rotate(-Math.PI / 2); ctx.fillText('Lynx \u2192', 0, 0); ctx.restore();
-
-    rafId = requestAnimationFrame(draw);
-  }
-
-  // Delay start to ensure layout is complete
-  setTimeout(function() { resize(); rafId = requestAnimationFrame(draw); }, 200);
-
-  window.addEventListener('lv-tab', function(e) {
-    if (e.detail) {
-      if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); }
-    } else {
-      running = false; if (rafId) cancelAnimationFrame(rafId);
-    }
+// Filter buttons
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderTable(btn.dataset.filter);
   });
-})();
-</script>
+});
 
-<!-- ── SIR animated canvas ── -->
-<script>
-(function() {
-  var canvas = document.getElementById('sir-canvas');
-  var ctx = canvas.getContext('2d');
-  var running = false, rafId = null;
-  var beta = 0.44, gamma = 0.09, dt = 0.15;
-  var S, I, R, tsS, tsI, tsR, trail, MAX_TS = 300, MAX_TRAIL = 200;
-  function reset() { S = 0.95; I = 0.05; R = 0.0; tsS = []; tsI = []; tsR = []; trail = []; }
-  reset();
-  function resize() {
-    var r = canvas.getBoundingClientRect();
-    canvas.width = r.width * (window.devicePixelRatio || 1);
-    canvas.height = 180 * (window.devicePixelRatio || 1);
-    ctx.setTransform((window.devicePixelRatio || 1), 0, 0, (window.devicePixelRatio || 1), 0, 0);
-  }
-  resize(); window.addEventListener('resize', resize);
-  function step() {
-    var dS = -beta * S * I * dt, dI = (beta * S * I - gamma * I) * dt, dR = gamma * I * dt;
-    S += dS; I += dI; R += dR;
-    S = Math.max(0, S); I = Math.max(0, I); R = Math.max(0, R);
-    tsS.push(S); tsI.push(I); tsR.push(R); trail.push({ s: S, i: I });
-    if (tsS.length > MAX_TS) { tsS.shift(); tsI.shift(); tsR.shift(); }
-    if (trail.length > MAX_TRAIL) trail.shift();
-    if (I < 0.001 && tsS.length > 50) reset();
-  }
-  function draw() {
-    if (!running) return;
-    for (var s = 0; s < 2; s++) step();
-    var W = canvas.width / (window.devicePixelRatio || 1), Ht = 180, halfW = W / 2, pad = 30;
-    var gw = halfW - pad * 2, gh = Ht - pad * 2;
-    ctx.clearRect(0, 0, W, Ht); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, Ht);
-    var mapY = function(v) { return pad + gh - v * gh; };
-    var mapX = function(i) { return pad + i / (MAX_TS - 1) * gw; };
-    var lines = [[tsS, '#4285F4'], [tsI, '#EA4335'], [tsR, '#34A853']];
-    for (var li = 0; li < 3; li++) {
-      var arr = lines[li][0]; ctx.strokeStyle = lines[li][1]; ctx.lineWidth = 2.5; ctx.beginPath();
-      for (var i = 0; i < arr.length; i++) { i === 0 ? ctx.moveTo(mapX(i), mapY(arr[i])) : ctx.lineTo(mapX(i), mapY(arr[i])); }
-      ctx.stroke();
-    }
-    ctx.font = '11px Inter,sans-serif';
-    var labels = [['S','#4285F4',pad+4],['I','#EA4335',pad+36],['R','#34A853',pad+64]];
-    for (var i = 0; i < 3; i++) { ctx.fillStyle = labels[i][1]; ctx.beginPath(); ctx.arc(labels[i][2], 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText(labels[i][0], labels[i][2] + 8, 15); }
-    ctx.strokeStyle = '#DADCE0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, Ht - 8); ctx.stroke();
-    var ox = halfW + halfW / 2, oy = Ht / 2, sc = Math.min(gw, gh) * 0.8;
-    ctx.fillStyle = '#9E9E9E'; ctx.font = '10px Inter,sans-serif'; ctx.fillText('S \u2192', halfW + pad, Ht - 6);
-    ctx.save(); ctx.translate(halfW + 12, Ht / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('I \u2192', 0, 0); ctx.restore();
-    for (var i = 1; i < trail.length; i++) {
-      ctx.strokeStyle = 'rgba(234,67,53,' + (i / trail.length * 0.8).toFixed(2) + ')'; ctx.lineWidth = 2.5; ctx.beginPath();
-      ctx.moveTo(ox + (trail[i-1].s - 0.5) * sc, oy - trail[i-1].i * sc); ctx.lineTo(ox + (trail[i].s - 0.5) * sc, oy - trail[i].i * sc); ctx.stroke();
-    }
-    if (trail.length > 0) {
-      var last = trail[trail.length - 1]; ctx.shadowColor = '#EA4335'; ctx.shadowBlur = 10;
-      ctx.fillStyle = '#EA4335'; ctx.beginPath(); ctx.arc(ox + (last.s - 0.5) * sc, oy - last.i * sc, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
-    }
-    rafId = requestAnimationFrame(draw);
-  }
-  window.addEventListener('sir-tab', function(e) {
-    if (e.detail) { if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); } }
-    else { running = false; if (rafId) cancelAnimationFrame(rafId); }
-  });
-})();
-</script>
-
-<!-- ── Orbit animated canvas ── -->
-<script>
-(function() {
-  var canvas = document.getElementById('orbit-canvas');
-  var ctx = canvas.getContext('2d');
-  var running = false, rafId = null;
-  var omega = 0.5, a = 1.0, e = 0.2, theta = 0;
-  var tsX = [], tsY = [], trail = [], MAX_TS = 300, MAX_TRAIL = 200, lastTime = 0;
-  function resize() {
-    var r = canvas.getBoundingClientRect();
-    canvas.width = r.width * (window.devicePixelRatio || 1);
-    canvas.height = 180 * (window.devicePixelRatio || 1);
-    ctx.setTransform((window.devicePixelRatio || 1), 0, 0, (window.devicePixelRatio || 1), 0, 0);
-  }
-  resize(); window.addEventListener('resize', resize);
-  function step() {
-    theta += omega * 0.03;
-    var x = a * (Math.cos(theta) - e), y = a * Math.sqrt(1 - e * e) * Math.sin(theta);
-    tsX.push(x); tsY.push(y); trail.push({ x: x, y: y });
-    if (tsX.length > MAX_TS) { tsX.shift(); tsY.shift(); }
-    if (trail.length > MAX_TRAIL) trail.shift();
-  }
-  function draw(now) {
-    if (!running) return;
-    for (var s = 0; s < 2; s++) step();
-    var W = canvas.width / (window.devicePixelRatio || 1), Ht = 180, halfW = W / 2, pad = 30;
-    var gw = halfW - pad * 2, gh = Ht - pad * 2;
-    ctx.clearRect(0, 0, W, Ht); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, Ht);
-    var mapY = function(v) { return pad + gh / 2 - v / 1.3 * (gh / 2); };
-    var mapX = function(i) { return pad + i / (MAX_TS - 1) * gw; };
-    var lines = [[tsX, '#4285F4'], [tsY, '#EA4335']];
-    for (var li = 0; li < 2; li++) {
-      var arr = lines[li][0]; ctx.strokeStyle = lines[li][1]; ctx.lineWidth = 2.5; ctx.beginPath();
-      for (var i = 0; i < arr.length; i++) { i === 0 ? ctx.moveTo(mapX(i), mapY(arr[i])) : ctx.lineTo(mapX(i), mapY(arr[i])); }
-      ctx.stroke();
-    }
-    ctx.font = '11px Inter,sans-serif';
-    ctx.fillStyle = '#4285F4'; ctx.beginPath(); ctx.arc(pad + 4, 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText('x(t)', pad + 12, 15);
-    ctx.fillStyle = '#EA4335'; ctx.beginPath(); ctx.arc(pad + 56, 12, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#5F6368'; ctx.fillText('y(t)', pad + 64, 15);
-    ctx.strokeStyle = '#DADCE0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, Ht - 8); ctx.stroke();
-    var ox = halfW + halfW / 2, oy = Ht / 2, sc = Math.min(gw, gh) * 0.55;
-    ctx.fillStyle = '#FBBC04'; ctx.beginPath(); ctx.arc(ox, oy, 5, 0, Math.PI * 2); ctx.fill();
-    for (var i = 1; i < trail.length; i++) {
-      ctx.strokeStyle = 'rgba(66,133,244,' + (i / trail.length * 0.8).toFixed(2) + ')'; ctx.lineWidth = 2.5; ctx.beginPath();
-      ctx.moveTo(ox + trail[i-1].x * sc, oy - trail[i-1].y * sc); ctx.lineTo(ox + trail[i].x * sc, oy - trail[i].y * sc); ctx.stroke();
-    }
-    if (trail.length > 0) {
-      var last = trail[trail.length - 1]; ctx.shadowColor = '#4285F4'; ctx.shadowBlur = 10;
-      ctx.fillStyle = '#4285F4'; ctx.beginPath(); ctx.arc(ox + last.x * sc, oy - last.y * sc, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
-    }
-    rafId = requestAnimationFrame(draw);
-  }
-  window.addEventListener('orbit-tab', function(e) {
-    if (e.detail) { if (!running) { running = true; resize(); rafId = requestAnimationFrame(draw); } }
-    else { running = false; if (rafId) cancelAnimationFrame(rafId); }
-  });
-})();
-</script>
-
-<!-- ── Live Discoveries animations ── -->
-<script>
-(function(){
-  // Intersection Observer: only animate when visible
-  var liveObs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ e.target._liveVisible = e.isIntersecting; });
-  }, { threshold: 0.1 });
-
-  // ── 1. Double Pendulum ──
-  (function(){
-    var c = document.getElementById('pendulum-canvas'), ctx = c.getContext('2d');
-    liveObs.observe(c);
-    var g=9.81,L1=0.4,L2=0.4,m1=1,m2=1,th1=Math.PI/2,th2=Math.PI/1.2,w1=0,w2=0,dt=0.01;
-    var trail=[];
-    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
-    resize(); window.addEventListener('resize',resize);
-    function step(){
-      for(var i=0;i<4;i++){
-        var d=th1-th2,s=Math.sin(d),co=Math.cos(d);
-        var den1=L1*(2*m1+m2-m2*Math.cos(2*d));
-        var a1=(-g*(2*m1+m2)*Math.sin(th1)-m2*g*Math.sin(th1-2*th2)-2*s*m2*(w2*w2*L2+w1*w1*L1*co))/den1;
-        var a2=(2*s*(w1*w1*L1*(m1+m2)+g*(m1+m2)*Math.cos(th1)+w2*w2*L2*m2*co))/(L2*(2*m1+m2-m2*Math.cos(2*d)));
-        w1+=a1*dt; w2+=a2*dt; th1+=w1*dt; th2+=w2*dt;
-      }
-      var cx=c.width/4, cy=50, sc=200;
-      var x1=cx+L1*sc*Math.sin(th1), y1=cy+L1*sc*Math.cos(th1);
-      var x2=x1+L2*sc*Math.sin(th2), y2=y1+L2*sc*Math.cos(th2);
-      var spd=Math.sqrt(w1*w1+w2*w2);
-      trail.push({x:x2,y:y2,s:spd});
-      if(trail.length>300) trail.shift();
-      return {cx:cx,cy:cy,x1:x1,y1:y1,x2:x2,y2:y2};
-    }
-    function draw(){
-      if(!c._liveVisible){requestAnimationFrame(draw);return;}
-      var p=step(), W=c.width/2, H=250;
-      ctx.clearRect(0,0,W,H);
-      // trail
-      for(var i=1;i<trail.length;i++){
-        var t=trail[i], ratio=Math.min(t.s/8,1), alpha=i/trail.length*0.7;
-        var r=Math.round(66+(234-66)*ratio), g2=Math.round(133+(67-133)*ratio), b=Math.round(244+(53-244)*ratio);
-        ctx.strokeStyle='rgba('+r+','+g2+','+b+','+alpha.toFixed(2)+')';
-        ctx.lineWidth=1.5; ctx.beginPath();
-        ctx.moveTo(trail[i-1].x,trail[i-1].y); ctx.lineTo(t.x,t.y); ctx.stroke();
-      }
-      // arms
-      ctx.strokeStyle='#9AA0A6'; ctx.lineWidth=3;
-      ctx.beginPath(); ctx.moveTo(p.cx,p.cy); ctx.lineTo(p.x1,p.y1); ctx.lineTo(p.x2,p.y2); ctx.stroke();
-      // joints
-      ctx.fillStyle='#4285F4';
-      ctx.beginPath(); ctx.arc(p.cx,p.cy,5,0,Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(p.x1,p.y1,4,0,Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(p.x2,p.y2,4,0,Math.PI*2); ctx.fill();
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-  })();
-
-  // ── 2. Planetary Orbits ──
-  (function(){
-    var c = document.getElementById('planets-canvas'), ctx = c.getContext('2d');
-    liveObs.observe(c);
-    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
-    resize(); window.addEventListener('resize',resize);
-    var planets=[
-      {a:45,e:0.12,period:2,color:'#4285F4',rgb:'66,133,244',r:3,trail:[]},
-      {a:75,e:0.15,period:4,color:'#34A853',rgb:'52,168,83',r:4,trail:[]},
-      {a:110,e:0.18,period:8,color:'#EA4335',rgb:'234,67,53',r:5,trail:[]}
-    ];
-    var start=performance.now();
-    function draw(){
-      if(!c._liveVisible){requestAnimationFrame(draw);return;}
-      var W=c.width/2, H=250, cx=W/2, cy=H/2;
-      var t=(performance.now()-start)/1000;
-      ctx.clearRect(0,0,W,H);
-      // star glow
-      var grd=ctx.createRadialGradient(cx,cy,2,cx,cy,18);
-      grd.addColorStop(0,'#FBBC04'); grd.addColorStop(0.5,'rgba(251,188,4,0.3)'); grd.addColorStop(1,'rgba(251,188,4,0)');
-      ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle='#FBBC04'; ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fill();
-      // orbit paths (dotted)
-      ctx.setLineDash([3,6]); ctx.strokeStyle='#E0E0E0'; ctx.lineWidth=1;
-      for(var i=0;i<planets.length;i++){
-        var p=planets[i];
-        ctx.beginPath(); ctx.ellipse(cx-p.a*p.e,cy,p.a,p.a*Math.sqrt(1-p.e*p.e),0,0,Math.PI*2); ctx.stroke();
-      }
-      ctx.setLineDash([]);
-      // planets
-      for(var i=0;i<planets.length;i++){
-        var p=planets[i], angle=t*2*Math.PI/p.period;
-        var x=cx+p.a*(Math.cos(angle)-p.e), y=cy+p.a*Math.sqrt(1-p.e*p.e)*Math.sin(angle);
-        p.trail.push({x:x,y:y}); if(p.trail.length>120) p.trail.shift();
-        for(var j=1;j<p.trail.length;j++){
-          ctx.strokeStyle='rgba('+p.rgb+','+(j/p.trail.length*0.5).toFixed(2)+')';
-          ctx.lineWidth=2; ctx.beginPath();
-          ctx.moveTo(p.trail[j-1].x,p.trail[j-1].y); ctx.lineTo(p.trail[j].x,p.trail[j].y); ctx.stroke();
-        }
-        ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(x,y,p.r,0,Math.PI*2); ctx.fill();
-      }
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-  })();
-
-  // ── 3. Epidemic SIR Grid ──
-  (function(){
-    var c = document.getElementById('epidemic-canvas'), ctx = c.getContext('2d');
-    liveObs.observe(c);
-    var COLS=20, ROWS=20, N=COLS*ROWS;
-    var grid, tsS=[], tsI=[], tsR=[], paused=0, maxTS=200;
-    function initGrid(){
-      grid=new Uint8Array(N); // 0=S,1=I,2=R
-      tsS=[]; tsI=[]; tsR=[];
-      for(var i=0;i<N;i++) grid[i]=0;
-      grid[Math.floor(ROWS/2)*COLS+Math.floor(COLS/2)]=1; // seed center
-    }
-    initGrid();
-    function resize(){ var r=c.getBoundingClientRect(); c.width=r.width*2; c.height=250*2; ctx.setTransform(2,0,0,2,0,0); }
-    resize(); window.addEventListener('resize',resize);
-    function stepSIR(){
-      var next=new Uint8Array(grid);
-      for(var r=0;r<ROWS;r++) for(var col=0;col<COLS;col++){
-        var idx=r*COLS+col;
-        if(grid[idx]===0){ // susceptible: check neighbors
-          var nb=[[r-1,col],[r+1,col],[r,col-1],[r,col+1]];
-          for(var k=0;k<4;k++){
-            var nr=nb[k][0],nc=nb[k][1];
-            if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&grid[nr*COLS+nc]===1){
-              if(Math.random()<0.15) { next[idx]=1; break; }
-            }
-          }
-        } else if(grid[idx]===1){ // infected: recover
-          if(Math.random()<0.05) next[idx]=2;
-        }
-      }
-      grid=next;
-      var s=0,inf=0,rec=0;
-      for(var i=0;i<N;i++){if(grid[i]===0)s++;else if(grid[i]===1)inf++;else rec++;}
-      tsS.push(s/N); tsI.push(inf/N); tsR.push(rec/N);
-      if(tsS.length>maxTS){tsS.shift();tsI.shift();tsR.shift();}
-      return inf;
-    }
-    var frameCount=0;
-    function draw(){
-      if(!c._liveVisible){requestAnimationFrame(draw);return;}
-      var W=c.width/2, H=250;
-      ctx.clearRect(0,0,W,H);
-      frameCount++;
-      if(paused>0){ paused--; }
-      else if(frameCount%2===0){
-        var inf=stepSIR();
-        if(inf===0 && tsI.length>30){ paused=120; setTimeout(initGrid,2000); }
-      }
-      // draw grid
-      var gridSize=Math.min(W*0.45, H*0.85), cellW=gridSize/COLS, cellH=gridSize/ROWS;
-      var gx=(W*0.5-gridSize)/2, gy=(H-gridSize)/2;
-      var colors=['#4285F4','#EA4335','#34A853'];
-      for(var r=0;r<ROWS;r++) for(var col=0;col<COLS;col++){
-        var idx=r*COLS+col;
-        ctx.fillStyle=colors[grid[idx]];
-        ctx.beginPath(); ctx.arc(gx+col*cellW+cellW/2, gy+r*cellH+cellH/2, cellW*0.35, 0, Math.PI*2); ctx.fill();
-      }
-      // draw curves on right half
-      var pad=12, cw=W*0.45, ch=H-pad*2, cx0=W*0.55;
-      var mapX=function(i){return cx0+i/(maxTS-1)*cw;};
-      var mapY=function(v){return pad+ch-v*ch;};
-      var curves=[[tsS,'#4285F4'],[tsI,'#EA4335'],[tsR,'#34A853']];
-      for(var li=0;li<3;li++){
-        var arr=curves[li][0]; ctx.strokeStyle=curves[li][1]; ctx.lineWidth=2; ctx.beginPath();
-        for(var i=0;i<arr.length;i++){i===0?ctx.moveTo(mapX(i),mapY(arr[i])):ctx.lineTo(mapX(i),mapY(arr[i]));}
-        ctx.stroke();
-      }
-      ctx.font='10px Inter,sans-serif'; ctx.fillStyle='#5F6368';
-      ctx.fillStyle='#4285F4'; ctx.fillText('S',cx0,pad+10);
-      ctx.fillStyle='#EA4335'; ctx.fillText('I',cx0+14,pad+10);
-      ctx.fillStyle='#34A853'; ctx.fillText('R',cx0+26,pad+10);
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-  })();
-})();
-</script>
-
-<!-- ── NASA Case Study Canvases ── -->
-<script>
-(function() {
-  // === Degradation trajectory canvas ===
-  var c1 = document.getElementById('cs-degrad-canvas');
-  if (!c1) return;
-  var ctx1 = c1.getContext('2d');
-  var dpr = window.devicePixelRatio || 1;
-
-  function setupCanvas(canvas, ctx) {
-    var rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
-    return { w: rect.width, h: rect.height };
-  }
-
-  // Generate 10 synthetic engine degradation curves
-  function seededRng(seed) {
-    var s = seed;
-    return function() {
-      s = (s * 16807 + 0) % 2147483647;
-      return s / 2147483647;
-    };
-  }
-
-  function generateEngines(n) {
-    var engines = [];
-    for (var i = 0; i < n; i++) {
-      var rng = seededRng(42 + i * 17);
-      var lifetime = 150 + Math.floor(rng() * 200);
-      var basePs30 = 47.0 + rng() * 0.8;
-      var degradRate = 0.003 + rng() * 0.006;
-      var points = [];
-      for (var t = 0; t < lifetime; t++) {
-        var progress = t / lifetime;
-        var nonlinear = progress < 0.6 ? progress * 0.3 : 0.18 + Math.pow((progress - 0.6) / 0.4, 2) * 1.5;
-        var noise = (rng() - 0.5) * 0.15;
-        points.push(basePs30 + nonlinear + noise);
-      }
-      engines.push({ lifetime: lifetime, points: points, hue: 160 + i * 18 });
-    }
-    return engines;
-  }
-
-  var engines = generateEngines(10);
-  var animT = 0;
-
-  function drawDegrad() {
-    var sz = setupCanvas(c1, ctx1);
-    var w = sz.w, h = sz.h;
-    ctx1.clearRect(0, 0, w, h);
-
-    // Background
-    ctx1.fillStyle = 'rgba(0,0,0,0.1)';
-    ctx1.fillRect(0, 0, w, h);
-
-    // Axes
-    var pad = { l: 45, r: 15, t: 10, b: 30 };
-    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
-
-    ctx1.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx1.lineWidth = 1;
-    ctx1.beginPath();
-    ctx1.moveTo(pad.l, pad.t); ctx1.lineTo(pad.l, h - pad.b);
-    ctx1.lineTo(w - pad.r, h - pad.b);
-    ctx1.stroke();
-
-    // Labels
-    ctx1.fillStyle = '#7A8A9C';
-    ctx1.font = '11px Inter, sans-serif';
-    ctx1.textAlign = 'center';
-    ctx1.fillText('Normalized lifecycle (0 = new, 1 = failure)', pad.l + pw / 2, h - 5);
-    ctx1.save();
-    ctx1.translate(12, pad.t + ph / 2);
-    ctx1.rotate(-Math.PI / 2);
-    ctx1.fillText('Ps30 (psia)', 0, 0);
-    ctx1.restore();
-
-    // Draw curves
-    var yMin = 46.8, yMax = 49.2;
-    var visibleFrac = Math.min(1, animT / 120);
-
-    for (var e = 0; e < engines.length; e++) {
-      var eng = engines[e];
-      var pts = eng.points;
-      var maxPts = Math.floor(pts.length * visibleFrac);
-      if (maxPts < 2) continue;
-
-      ctx1.beginPath();
-      ctx1.strokeStyle = 'hsla(' + eng.hue + ', 70%, 55%, 0.7)';
-      ctx1.lineWidth = 1.2;
-
-      for (var i = 0; i < maxPts; i++) {
-        var x = pad.l + (i / (pts.length - 1)) * pw;
-        var y = pad.t + (1 - (pts[i] - yMin) / (yMax - yMin)) * ph;
-        if (i === 0) ctx1.moveTo(x, y);
-        else ctx1.lineTo(x, y);
-      }
-      ctx1.stroke();
-    }
-
-    animT++;
-    if (animT < 180) requestAnimationFrame(drawDegrad);
-  }
-
-  // === Ranking bar chart canvas ===
-  var c2 = document.getElementById('cs-ranking-canvas');
-  var ctx2 = c2.getContext('2d');
-
-  var rankData = [
-    { name: 'Ps30', rho: 0.708 },
-    { name: 'T50', rho: 0.694 },
-    { name: '\u03C6', rho: -0.684 },
-    { name: 'P30', rho: -0.668 },
-    { name: 'BPR', rho: 0.658 },
-    { name: 'W32', rho: -0.652 },
-    { name: 'W31', rho: -0.650 },
-    { name: 'htBleed', rho: 0.628 },
-    { name: 'T24', rho: 0.469 },
-    { name: 'NRf', rho: -0.434 },
-  ];
-
-  var rankAnimT = 0;
-
-  function drawRanking() {
-    var sz = setupCanvas(c2, ctx2);
-    var w = sz.w, h = sz.h;
-    ctx2.clearRect(0, 0, w, h);
-    ctx2.fillStyle = 'rgba(0,0,0,0.1)';
-    ctx2.fillRect(0, 0, w, h);
-
-    var pad = { l: 65, r: 20, t: 10, b: 25 };
-    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
-    var barH = Math.min(18, ph / rankData.length - 4);
-    var spacing = ph / rankData.length;
-    var center = pad.l + pw * 0.5;
-    var growFrac = Math.min(1, rankAnimT / 60);
-
-    // Center line
-    ctx2.strokeStyle = 'rgba(255,255,255,0.2)';
-    ctx2.lineWidth = 1;
-    ctx2.beginPath();
-    ctx2.moveTo(center, pad.t);
-    ctx2.lineTo(center, h - pad.b);
-    ctx2.stroke();
-
-    // Labels
-    ctx2.fillStyle = '#7A8A9C';
-    ctx2.font = '10px Inter, sans-serif';
-    ctx2.textAlign = 'center';
-    ctx2.fillText('-0.7', pad.l, h - 8);
-    ctx2.fillText('0', center, h - 8);
-    ctx2.fillText('+0.7', w - pad.r, h - 8);
-
-    for (var i = 0; i < rankData.length; i++) {
-      var d = rankData[i];
-      var y = pad.t + spacing * i + spacing * 0.5;
-      var barLen = (d.rho / 0.8) * (pw * 0.5) * growFrac;
-
-      // Label
-      ctx2.fillStyle = '#A8B8CC';
-      ctx2.font = '11px Inter, sans-serif';
-      ctx2.textAlign = 'right';
-      ctx2.fillText(d.name, pad.l - 8, y + 4);
-
-      // Bar
-      ctx2.fillStyle = d.rho > 0 ? 'rgba(107, 164, 245, 0.8)' : 'rgba(245, 107, 107, 0.8)';
-      if (barLen > 0) {
-        ctx2.fillRect(center, y - barH / 2, barLen, barH);
-      } else {
-        ctx2.fillRect(center + barLen, y - barH / 2, -barLen, barH);
-      }
-    }
-
-    rankAnimT++;
-    if (rankAnimT < 90) requestAnimationFrame(drawRanking);
-  }
-
-  // Trigger on visibility
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        animT = 0;
-        rankAnimT = 0;
-        requestAnimationFrame(drawDegrad);
-        requestAnimationFrame(drawRanking);
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-
-  observer.observe(document.getElementById('nasa'));
-})();
-</script>
-
-<!-- ── Kepler Case Study Canvases ── -->
-<script>
-(function() {
-  var c1 = document.getElementById('cs-kepler-canvas');
-  if (!c1) return;
-  var ctx1 = c1.getContext('2d');
-  var c2 = document.getElementById('cs-massrad-canvas');
-  var ctx2 = c2.getContext('2d');
-  var dpr = window.devicePixelRatio || 1;
-
-  function setup(canvas, ctx) {
-    var r = canvas.getBoundingClientRect();
-    canvas.width = r.width * dpr; canvas.height = r.height * dpr;
-    ctx.scale(dpr, dpr);
-    return { w: r.width, h: r.height };
-  }
-
-  function seededRng(s) { return function() { s = (s*16807)%2147483647; return s/2147483647; }; }
-
-  // Generate synthetic exoplanet data following Kepler's law
-  function genKeplerData(n) {
-    var rng = seededRng(1619); // Kepler's year :)
-    var pts = [];
-    for (var i = 0; i < n; i++) {
-      var M = 0.3 + rng() * 2.0;
-      var a = Math.pow(10, -2 + rng() * 4);
-      var P2 = Math.pow(a, 3) / M;
-      var noise = 1 + (rng() - 0.5) * 0.03;
-      pts.push({ x: Math.log10(P2 * noise), y: Math.log10(P2), M: M });
-    }
-    return pts;
-  }
-
-  var keplerPts = genKeplerData(300);
-  var anim1 = 0;
-
-  function drawKepler() {
-    var sz = setup(c1, ctx1);
-    var w = sz.w, h = sz.h;
-    ctx1.clearRect(0, 0, w, h);
-    ctx1.fillStyle = 'rgba(0,0,0,0.1)';
-    ctx1.fillRect(0, 0, w, h);
-
-    var pad = { l: 50, r: 15, t: 10, b: 30 };
-    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
-    var xMin = -6, xMax = 10, yMin = -6, yMax = 10;
-    var visN = Math.min(keplerPts.length, Math.floor(keplerPts.length * anim1 / 60));
-
-    // Perfect line
-    ctx1.strokeStyle = 'rgba(52, 168, 83, 0.4)';
-    ctx1.lineWidth = 2;
-    ctx1.beginPath();
-    var x0 = pad.l + ((xMin - xMin) / (xMax - xMin)) * pw;
-    var y0 = pad.t + (1 - (xMin - yMin) / (yMax - yMin)) * ph;
-    var x1 = pad.l + ((xMax - xMin) / (xMax - xMin)) * pw;
-    var y1 = pad.t + (1 - (xMax - yMin) / (yMax - yMin)) * ph;
-    ctx1.moveTo(x0, y0); ctx1.lineTo(x1, y1);
-    ctx1.stroke();
-
-    // Points
-    for (var i = 0; i < visN; i++) {
-      var p = keplerPts[i];
-      var px = pad.l + ((p.x - xMin) / (xMax - xMin)) * pw;
-      var py = pad.t + (1 - (p.y - yMin) / (yMax - yMin)) * ph;
-      ctx1.beginPath();
-      ctx1.arc(px, py, 2.5, 0, Math.PI * 2);
-      ctx1.fillStyle = 'rgba(181, 124, 236, 0.6)';
-      ctx1.fill();
-    }
-
-    // Labels
-    ctx1.fillStyle = '#7A8A9C';
-    ctx1.font = '11px Inter, sans-serif';
-    ctx1.textAlign = 'center';
-    ctx1.fillText('log\u2081\u2080(a\u00B3/M\u2605)', pad.l + pw / 2, h - 5);
-    ctx1.save();
-    ctx1.translate(12, pad.t + ph / 2);
-    ctx1.rotate(-Math.PI / 2);
-    ctx1.fillText('log\u2081\u2080(P\u00B2)', 0, 0);
-    ctx1.restore();
-
-    // R^2 label
-    if (anim1 > 40) {
-      ctx1.fillStyle = '#B57CEC';
-      ctx1.font = 'bold 14px Inter, sans-serif';
-      ctx1.textAlign = 'left';
-      ctx1.fillText('R\u00B2 = 0.998', pad.l + 10, pad.t + 20);
-      ctx1.font = '11px Inter, sans-serif';
-      ctx1.fillStyle = '#34A853';
-      ctx1.fillText('slope = 0.9988', pad.l + 10, pad.t + 38);
-    }
-
-    anim1++;
-    if (anim1 < 90) requestAnimationFrame(drawKepler);
-  }
-
-  // Mass-radius scatter
-  function genMassRad(n) {
-    var rng = seededRng(42);
-    var pts = [];
-    for (var i = 0; i < n; i++) {
-      var logM = -0.5 + rng() * 5;
-      var M = Math.pow(10, logM);
-      var gamma, scatter;
-      if (M < 10) { gamma = 0.42; scatter = 0.15; }
-      else if (M < 50) { gamma = 0.25; scatter = 0.2; }
-      else { gamma = 0.05; scatter = 0.12; }
-      var logR = Math.log10(1.29) + gamma * logM + (rng() - 0.5) * scatter;
-      pts.push({ logM: logM, logR: logR });
-    }
-    return pts;
-  }
-
-  var mrPts = genMassRad(250);
-  var anim2 = 0;
-
-  function drawMR() {
-    var sz = setup(c2, ctx2);
-    var w = sz.w, h = sz.h;
-    ctx2.clearRect(0, 0, w, h);
-    ctx2.fillStyle = 'rgba(0,0,0,0.1)';
-    ctx2.fillRect(0, 0, w, h);
-
-    var pad = { l: 50, r: 15, t: 10, b: 30 };
-    var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
-    var xMin = -0.5, xMax = 4.5, yMin = -0.3, yMax = 1.6;
-    var visN = Math.min(mrPts.length, Math.floor(mrPts.length * anim2 / 60));
-
-    // Fit line
-    ctx2.strokeStyle = 'rgba(234, 67, 53, 0.7)';
-    ctx2.lineWidth = 2;
-    ctx2.beginPath();
-    for (var xi = 0; xi <= 100; xi++) {
-      var lm = xMin + (xi / 100) * (xMax - xMin);
-      var lr = Math.log10(1.29) + 0.370 * lm;
-      var px = pad.l + ((lm - xMin) / (xMax - xMin)) * pw;
-      var py = pad.t + (1 - (lr - yMin) / (yMax - yMin)) * ph;
-      if (xi === 0) ctx2.moveTo(px, py); else ctx2.lineTo(px, py);
-    }
-    ctx2.stroke();
-
-    // Rocky/Gas boundary
-    var bx = pad.l + ((1 - xMin) / (xMax - xMin)) * pw;
-    ctx2.strokeStyle = 'rgba(255,165,0,0.4)';
-    ctx2.setLineDash([5, 5]);
-    ctx2.beginPath();
-    ctx2.moveTo(bx, pad.t); ctx2.lineTo(bx, h - pad.b);
-    ctx2.stroke();
-    ctx2.setLineDash([]);
-
-    // Points
-    for (var i = 0; i < visN; i++) {
-      var p = mrPts[i];
-      var px = pad.l + ((p.logM - xMin) / (xMax - xMin)) * pw;
-      var py = pad.t + (1 - (p.logR - yMin) / (yMax - yMin)) * ph;
-      var hue = (p.logM / 4.5) * 240;
-      ctx2.beginPath();
-      ctx2.arc(px, py, 2.5, 0, Math.PI * 2);
-      ctx2.fillStyle = 'hsla(' + hue + ', 60%, 55%, 0.5)';
-      ctx2.fill();
-    }
-
-    // Labels
-    ctx2.fillStyle = '#7A8A9C';
-    ctx2.font = '11px Inter, sans-serif';
-    ctx2.textAlign = 'center';
-    ctx2.fillText('log\u2081\u2080(Mass) [M\u2295]', pad.l + pw / 2, h - 5);
-    ctx2.save();
-    ctx2.translate(12, pad.t + ph / 2);
-    ctx2.rotate(-Math.PI / 2);
-    ctx2.fillText('log\u2081\u2080(Radius) [R\u2295]', 0, 0);
-    ctx2.restore();
-
-    if (anim2 > 40) {
-      ctx2.fillStyle = '#B57CEC';
-      ctx2.font = 'bold 12px Inter, sans-serif';
-      ctx2.textAlign = 'left';
-      ctx2.fillText('R ~ M\u00B0\u00B7\u00B3\u2077', pad.l + 10, pad.t + 20);
-    }
-
-    anim2++;
-    if (anim2 < 90) requestAnimationFrame(drawMR);
-  }
-
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        anim1 = 0; anim2 = 0;
-        requestAnimationFrame(drawKepler);
-        requestAnimationFrame(drawMR);
-        obs.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-
-  obs.observe(document.getElementById('kepler'));
-})();
+// Init
+renderTable("all");
 </script>
 
 </body>
