@@ -250,6 +250,7 @@ header {
 .domain-engineering { background: rgba(251, 146, 60, 0.12); color: #fb923c; }
 .domain-econ { background: rgba(168, 162, 158, 0.15); color: #a8a29e; }
 .domain-gr { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+.domain-geo { background: rgba(180, 83, 9, 0.15); color: #d97706; }
 
 .exp-law {
   font-size: 13px;
@@ -378,15 +379,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">18</span>
+      <span class="stat-value">19</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">9</span>
+      <span class="stat-value">10</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">25</span>
+      <span class="stat-value">26</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -404,7 +405,8 @@ body::after {
     <button class="filter-btn" data-filter="engineering">Engineering</button>
     <button class="filter-btn" data-filter="bio">Biology</button>
     <button class="filter-btn" data-filter="econ">Economics</button>
-    <span class="filter-count"><span id="visible-count">18</span> experiments</span>
+    <button class="filter-btn" data-filter="geo">Geophysics</button>
+    <span class="filter-count"><span id="visible-count">19</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -437,6 +439,19 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E092",
+    title: "Earthquake Laws from USGS Catalog",
+    subtitle: "Gutenberg-Richter (b=0.81), Poisson process confirmed, 1,930 real earthquakes",
+    domain: "geo",
+    domainLabel: "Geophysics",
+    law: "log\u2081\u2080(N\u2265M) = 5.78 \u2212 0.81\u00b7M",
+    r2: "0.915",
+    r2class: "r2-good",
+    source: "USGS",
+    status: "passed",
+    href: null
+  },
   {
     id: "E091",
     title: "Rediscovering Stellar Physics from ESA Gaia DR3",
@@ -682,6 +697,7 @@ const domainClassMap = {
   engineering: "domain-engineering",
   econ: "domain-econ",
   gr: "domain-gr",
+  geo: "domain-geo",
 };
 
 const tbody = document.getElementById("exp-body");
