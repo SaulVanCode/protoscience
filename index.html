@@ -251,6 +251,7 @@ header {
 .domain-econ { background: rgba(168, 162, 158, 0.15); color: #a8a29e; }
 .domain-gr { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
 .domain-geo { background: rgba(180, 83, 9, 0.15); color: #d97706; }
+.domain-ocean { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
 
 .exp-law {
   font-size: 13px;
@@ -379,15 +380,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">19</span>
+      <span class="stat-value">20</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">10</span>
+      <span class="stat-value">11</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">26</span>
+      <span class="stat-value">27</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -406,7 +407,8 @@ body::after {
     <button class="filter-btn" data-filter="bio">Biology</button>
     <button class="filter-btn" data-filter="econ">Economics</button>
     <button class="filter-btn" data-filter="geo">Geophysics</button>
-    <span class="filter-count"><span id="visible-count">19</span> experiments</span>
+    <button class="filter-btn" data-filter="ocean">Oceanography</button>
+    <span class="filter-count"><span id="visible-count">20</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -439,6 +441,19 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E093",
+    title: "Ocean Equation of State from Argo Floats",
+    subtitle: "EOS-80 coefficients rediscovered exactly from 1,000 real ocean profiles",
+    domain: "ocean",
+    domainLabel: "Oceanography",
+    law: "\u03c1(T,S,P) = 999.84 + 0.068T \u2212 0.009T\u00b2 + 0.802S",
+    r2: "1.000",
+    r2class: "r2-high",
+    source: "Argo / Argovis",
+    status: "passed",
+    href: "experiments/e093-argo-ocean.html"
+  },
   {
     id: "E092",
     title: "Earthquake Laws from USGS Catalog",
@@ -698,6 +713,7 @@ const domainClassMap = {
   econ: "domain-econ",
   gr: "domain-gr",
   geo: "domain-geo",
+  ocean: "domain-ocean",
 };
 
 const tbody = document.getElementById("exp-body");
