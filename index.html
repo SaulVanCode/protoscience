@@ -380,15 +380,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">20</span>
+      <span class="stat-value">21</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">11</span>
+      <span class="stat-value">12</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">27</span>
+      <span class="stat-value">33</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -408,7 +408,7 @@ body::after {
     <button class="filter-btn" data-filter="econ">Economics</button>
     <button class="filter-btn" data-filter="geo">Geophysics</button>
     <button class="filter-btn" data-filter="ocean">Oceanography</button>
-    <span class="filter-count"><span id="visible-count">20</span> experiments</span>
+    <span class="filter-count"><span id="visible-count">21</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -441,6 +441,19 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E094",
+    title: "Kleiber's Law from 5,416 Mammal Species",
+    subtitle: "6/7 biological scaling laws rediscovered. Quarter-power universality confirmed.",
+    domain: "bio",
+    domainLabel: "Biology",
+    law: "BMR \u221d M\u00b3\u2044\u2074 (Kleiber)",
+    r2: "0.923",
+    r2class: "r2-high",
+    source: "PanTHERIA",
+    status: "passed",
+    href: null
+  },
   {
     id: "E093",
     title: "Ocean Equation of State from Argo Floats",
