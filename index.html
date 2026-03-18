@@ -380,15 +380,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">23</span>
+      <span class="stat-value">25</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">13</span>
+      <span class="stat-value">15</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">34</span>
+      <span class="stat-value">37</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -408,7 +408,7 @@ body::after {
     <button class="filter-btn" data-filter="econ">Economics</button>
     <button class="filter-btn" data-filter="geo">Geophysics</button>
     <button class="filter-btn" data-filter="ocean">Oceanography</button>
-    <span class="filter-count"><span id="visible-count">23</span> experiments</span>
+    <span class="filter-count"><span id="visible-count">25</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -441,6 +441,32 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E098",
+    title: "Laws in Human Geography and Society",
+    subtitle: "Doubling GDP adds 3yr of life. Fertility ~ GDP^-0.25. 51% noisier than physics.",
+    domain: "econ",
+    domainLabel: "Economics",
+    law: "LE = 33.7 + 10.0 \u00b7 log(GDP)",
+    r2: "0.644",
+    r2class: "r2-good",
+    source: "World Bank",
+    status: "passed",
+    href: "experiments/e098-geography.html"
+  },
+  {
+    id: "E097",
+    title: "Particle Mass Patterns (Exploratory)",
+    subtitle: "Koide formula confirmed for leptons (0.0009% error). Does NOT extend to quarks.",
+    domain: "physics",
+    domainLabel: "Physics",
+    law: "Koide R = 2/3 (leptons only)",
+    r2: "n/a",
+    r2class: "r2-mod",
+    source: "PDG 2024",
+    status: "partial",
+    href: null
+  },
   {
     id: "E096",
     title: "Meta-ProtoScience: Patterns in Discovered Laws",
