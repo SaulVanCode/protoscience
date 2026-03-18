@@ -380,15 +380,15 @@ body::after {
 
   <div class="stats-bar fade-in delay-1">
     <div class="stat">
-      <span class="stat-value">21</span>
+      <span class="stat-value">22</span>
       <span class="stat-label">Experiments</span>
     </div>
     <div class="stat">
-      <span class="stat-value">12</span>
+      <span class="stat-value">13</span>
       <span class="stat-label">Domains</span>
     </div>
     <div class="stat">
-      <span class="stat-value">33</span>
+      <span class="stat-value">34</span>
       <span class="stat-label">Laws Found</span>
     </div>
     <div class="stat">
@@ -408,7 +408,7 @@ body::after {
     <button class="filter-btn" data-filter="econ">Economics</button>
     <button class="filter-btn" data-filter="geo">Geophysics</button>
     <button class="filter-btn" data-filter="ocean">Oceanography</button>
-    <span class="filter-count"><span id="visible-count">21</span> experiments</span>
+    <span class="filter-count"><span id="visible-count">22</span> experiments</span>
   </div>
 
   <table class="exp-table fade-in delay-3">
@@ -441,6 +441,19 @@ body::after {
 
 <script>
 const EXPERIMENTS = [
+  {
+    id: "E095",
+    title: "Gompertz-Makeham Law of Human Mortality",
+    subtitle: "Death rate doubles every 7.8 years after 30. Confirmed in 5 countries.",
+    domain: "bio",
+    domainLabel: "Biology",
+    law: "m(x) = \u03b1 \u00b7 e^(\u03b2x), \u03b2=0.092",
+    r2: "0.994",
+    r2class: "r2-high",
+    source: "SSA / WHO",
+    status: "passed",
+    href: "experiments/e095-gompertz.html"
+  },
   {
     id: "E094",
     title: "Kleiber's Law from 5,416 Mammal Species",
